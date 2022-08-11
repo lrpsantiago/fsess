@@ -11,8 +11,8 @@ This is the standard script that all cars racing on FSE should be using on Seaso
 
 ## How to Setup
 1. Place a Programmable Block on your car;
-2. Place a Light Panel at the back of your car, then create  group with it called "Brakelight";
-3. Optionally, if your programmable block is not visible from the backpit, you can place a LCD to show onboard information, name it "Driver LCD";
+2. Place a Light Panel at the back of your car, then create group with it called "Brakelight";
+3. Optionally, if your programmable block is not visible from the cockpit, you can place a LCD to show onboard information, name it "Driver LCD";
 4. Open the Control Panel, look for your Programmable Block, click on the "Edit" button, then copy and paste the script;
 5. Make sure to set the following variables according to your needs:
    - DRIVER_NAME => Replace "Guest" to "Your Name"
