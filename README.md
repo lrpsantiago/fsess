@@ -1,6 +1,6 @@
 # FSESS - Formula Space Engineers Standard Script
 
-### Version 6.0 Beta
+### Version 6.0.0 Beta
 
 This is the standard script that all cars racing on FSE should be using on Season 6 and it features:
 - Pit Limiter
