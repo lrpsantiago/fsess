@@ -42,7 +42,7 @@ Season 6 is going to feature tire degradation, wheels are going to get less fric
 
 In order to change wheels, you have to go to the pits, with the Pit Limiter active, fully stop your car, then you are going to be able to switch tires using the arguments: ULTRA, SOFT, MEDIUM, HARD. Notice that once you change tires, the Tire Wear % changes to 100%, also a letter going to be displayed reprsenting the selected compound (U, S, M, H) and your Brakelight is going to change the color making your current compaund visible to the others. The image bellow show the specs for each compound type:
 
-![alt text](https://i.imgur.com/Tr5E8Ye.png)
+![alt text](https://i.imgur.com/Csqdrym.png)
 
 **Note: For now, the drive style won't matter too much on the tire degradation rate, it will be pretty similar to everyone. The degradation rate is only based on current speed (even if the wheels are not touching the ground), the faster you go, the faster your tire will degradate. (At 90m/s it reachs the maximum rate)**
 
