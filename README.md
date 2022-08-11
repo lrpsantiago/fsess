@@ -54,7 +54,7 @@ In order to change wheels, you have to go to the pits, with the Pit Limiter acti
   - No, once you cross the start line you are already being tracked. But in order to see your onboard race data, using commands and having the tire degradation effect on your car, you need to setup this script on your car.
   
 - **Is there anyway to stop the tire degradation?**
-  - No, unless you turn off your Programable Block (which would be cheating during a race). There is a discussion about preventing tire degradation when Pit Limiter is active, but for now, make sure to change tire before it's too late.
+  - No, unless you turn off your Programable Block (which would be cheating during a race). There is a discussion about preventing tire degradation when Pit Limiter is active, but for now, make sure to change your tires before it's too late.
   
 - **What is the Dynamic Thruster Downforce?**
   - It is an experimental feature which will use a downwards thruster on your car to apply downforce to it proportional to the current speed. Its usage still under discussion, but if you want to try, just put a thruster on your car and recompile the script, it will detect it and control it. It's an attempt to reduce the bounceness experienced by the drivers during the races.
