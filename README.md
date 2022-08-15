@@ -30,12 +30,14 @@ This is the standard script that all cars racing on FSE should be using on Seaso
 
 ## Arguments
 Here's a list of all arguments supported by the current script:
-- LMT    => Toggle Pit Limiter
-- DRS    => Toggle Drag Reduction System (DRS)
-- ULTRA  => Switch to Ultra-Soft Tires
-- SOFT   => Switch to Soft Tires
-- MEDIUM => Switch to Medium Tires
-- HARD   => Switch to Hard Tires
+- LMT     => Toggle Pit Limiter
+- LMT_ON  => Activate Pit Limiter
+- LMT_OFF => Deactivate Pit Limiter
+- DRS     => Toggle Drag Reduction System (DRS)
+- ULTRA   => Switch to Ultra-Soft Tires
+- SOFT    => Switch to Soft Tires
+- MEDIUM  => Switch to Medium Tires
+- HARD    => Switch to Hard Tires
 
 ## Tire Degradation
 Season 6 is going to feature tire degradation, wheels are going to get less friction overtime, affecting the overall performance of your car. You're going to be able to see the Tire Wear % on your onboard screen, once it reachs 0% a random wheels is going to pop-off your car as a puncture.
