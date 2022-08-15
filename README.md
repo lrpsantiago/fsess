@@ -1,6 +1,6 @@
 # FSESS - Formula Space Engineers Standard Script
 
-### Version 6.0.0 Beta
+### Version 6.0.1 Beta
 
 This is the standard script that all cars racing on FSE should be using on Season 6 and it features:
 - Pit Limiter
@@ -11,7 +11,7 @@ This is the standard script that all cars racing on FSE should be using on Seaso
 
 ## How to Setup
 1. Place a Programmable Block on your car;
-2. Place a Light Panel at the back of your car, then create group with it called "Brakelight";
+2. Place a Light Panel or a Transparent LCD at the back of your car, then create group with it called "Brakelight";
 3. Optionally, if your programmable block is not visible from the cockpit, you can place a LCD to show onboard information, name it "Driver LCD";
 4. Open the Control Panel, look for your Programmable Block, click on the "Edit" button, then copy and paste the script;
 5. Make sure to set the following variables according to your needs:
@@ -21,7 +21,7 @@ This is the standard script that all cars racing on FSE should be using on Seaso
 6. Most of times you won't change the following variables, but optionally you can set:
    - DEFAULT_SUSPENSION_POWER => Set the power percentage you use on your car suspensions, remember to put an "f" at the end of the number;
    - DEFAULT_SUSPENSION_SPEED_LIMIT => Set the top speed you use on your car suspensions, remember to put an "f" at the end of the number;
-7. If you want to see onboard race information (Current Lap, Position, Lap Time, Tire Wear), make sure to set the ADDRESS of the current track, so the race control can send race data to your car (you must have an Antenna on your car to receive data). 
+7. If you want to see onboard race information (Current Lap, Position, Lap Time, Tire Wear), you must have an Antenna on your car. 
 8. Once you have set the values, click on "Check Code" button, a success message should pop-up (if not,repeat the previous steps);
 9. After closing the pop-up, click on "OK" on the Editor;
 10. Setup the arguments to the Programmable Block on your car's hotbar, so you can execute commands for your cockpit, then you're ready to race.
