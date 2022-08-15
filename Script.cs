@@ -5,7 +5,6 @@ private const float DEFAULT_SUSPENSION_POWER = 100f;
 private const float DEFAULT_SUSPENSION_SPEED_LIMIT = 999;
 private const string DISPLAY_NAME = "Driver LCD";
 private const string BRAKELIGHT_NAME = "Brakelight";
-private const long ADDRESS = 140025732737312792; //Golden Globe Track Address
 
 //************ DO NOT MODIFY BELLOW HERE ************
 
@@ -46,13 +45,16 @@ private bool _isPitLimiterActive;
 private bool _isDrsActive;
 private StringBuilder _stringBuilder;
 private RaceData _data;
-private List<IMyLightingBlock> _brakelights;
+private List<IMyTerminalBlock> _brakelights;
 private TireCompound _currentTireCompound;
 private List<IMyThrust> _thrusters;
 private float _minTireFriction = 0;
 private float _maxTireFriction = 100;
 private float _tireWearFactor = 1;
 private float _friction = 100;
+private bool _isConnected = false;
+private long _address = -1;
+private IMyBroadcastListener _broadcastListener;
 
 public Program()
 {
@@ -66,6 +68,7 @@ public Program()
     SetupThrusters();
     SetupAntenna();
     LoadTires();
+    SetupBroadcastListener();
 
     Runtime.UpdateFrequency = UpdateFrequency.Update10;
 }
@@ -104,19 +107,35 @@ private void UpdateDownforce()
 
 private void UpdateCommunication()
 {
-    IGC.SendUnicastMessage(ADDRESS, "Register", $"{Me.CubeGrid.CustomName};{IGC.Me}");
-    var unisource = IGC.UnicastListener;
-
-    if (!unisource.HasPendingMessage)
+    if (_isConnected)
     {
+        var unisource = IGC.UnicastListener;
+
+        if (!unisource.HasPendingMessage)
+        {
+            return;
+        }
+
+        var messageUni = unisource.AcceptMessage();
+
+        if (messageUni.Tag == "RaceData")
+        {
+            _data.Map(messageUni.Data.ToString());
+        }
+
         return;
     }
 
-    var messageUni = unisource.AcceptMessage();
-
-    if (messageUni.Tag == "RaceData")
+    if (_broadcastListener.HasPendingMessage)
     {
-        _data.Map(messageUni.Data.ToString());
+        var message = _broadcastListener.AcceptMessage();
+
+        if (message.Tag == "Address")
+        {
+            _address = Convert.ToInt64(message.Data.ToString());
+            IGC.SendUnicastMessage(_address, "Register", $"{Me.CubeGrid.CustomName};{IGC.Me}");
+            _isConnected = true;
+        }
     }
 }
 
@@ -261,9 +280,9 @@ private void SetupDisplay()
 {
     _stringBuilder = new StringBuilder();
     _displays = new List<IMyTextSurface>
-    {
-        Me.GetSurface(0)
-    };
+{
+Me.GetSurface(0)
+};
 
     var display = (IMyTextSurface)GridTerminalSystem.GetBlockWithName(DISPLAY_NAME);
 
@@ -287,17 +306,25 @@ private void SetupBrakelights()
     GridTerminalSystem.GetBlockGroupWithName(BRAKELIGHT_NAME)
         .GetBlocks(lights, b => b.CubeGrid == Me.CubeGrid);
 
-    _brakelights = new List<IMyLightingBlock>();
+    _brakelights = new List<IMyTerminalBlock>();
 
     foreach (var l in lights)
     {
-        var light = (IMyLightingBlock)l;
+        if (l is IMyLightingBlock)
+        {
+            var light = (IMyLightingBlock)l;
+            light.Intensity = 5f;
+            light.BlinkLength = 0f;
+            light.BlinkIntervalSeconds = 0f;
+        }
+        else if (l is IMyTextPanel)
+        {
+            var lcd = (IMyTextPanel)l;
+            lcd.ContentType = ContentType.TEXT_AND_IMAGE;
+            lcd.WriteText("", false);
+        }
 
-        light.Intensity = 5f;
-        light.BlinkLength = 0f;
-        light.BlinkIntervalSeconds = 0f;
-
-        _brakelights.Add(light);
+        _brakelights.Add(l);
     }
 }
 
@@ -352,6 +379,14 @@ private void SetupAntenna()
     antenna.Radius = 5000;
     antenna.EnableBroadcasting = true;
     antenna.HudText = $"{DRIVER_NUMBER}-{DRIVER_NAME}";
+}
+
+private void SetupBroadcastListener()
+{
+    IGC.RegisterBroadcastListener("Address");
+    var listeners = new List<IMyBroadcastListener>();
+    IGC.GetBroadcastListeners(listeners);
+    _broadcastListener = listeners.FirstOrDefault();
 }
 
 private void HandleArgument(string argument)
@@ -441,14 +476,28 @@ private void SetTires(TireCompound compound)
     _friction = _maxTireFriction;
     _currentTireCompound = compound;
 
-    foreach (var l in _brakelights)
-    {
-        l.Color = lightColor;
-    }
+    SetBrakelightColor(lightColor);
 
     foreach (var s in _suspensions)
     {
         s.ApplyAction("Add Top Part");
+    }
+}
+
+private void SetBrakelightColor(Color color)
+{
+    foreach (var l in _brakelights)
+    {
+        if (l is IMyLightingBlock)
+        {
+            var light = (IMyLightingBlock)l;
+            light.Color = color;
+        }
+        else if (l is IMyTextPanel)
+        {
+            var lcd = (IMyTextPanel)l;
+            lcd.BackgroundColor = color;
+        }
     }
 }
 
