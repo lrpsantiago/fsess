@@ -111,16 +111,19 @@ private void UpdateCommunication()
     {
         var unisource = IGC.UnicastListener;
 
-        if (!unisource.HasPendingMessage)
+        while (unisource.HasPendingMessage)
         {
-            return;
-        }
+            var messageUni = unisource.AcceptMessage();
 
-        var messageUni = unisource.AcceptMessage();
+            if (messageUni.Tag == "RaceData")
+            {
+                _data.Map(messageUni.Data.ToString());
+            }
 
-        if (messageUni.Tag == "RaceData")
-        {
-            _data.Map(messageUni.Data.ToString());
+            if (messageUni.Tag == "Argument")
+            {
+                HandleArgument(messageUni.Data.ToString());
+            }
         }
 
         return;
@@ -394,6 +397,18 @@ private void HandleArgument(string argument)
     if (argument.Equals("LMT", StringComparison.InvariantCultureIgnoreCase))
     {
         _isPitLimiterActive = !_isPitLimiterActive;
+        return;
+    }
+
+    if (argument.Equals("LMT_ON", StringComparison.InvariantCultureIgnoreCase))
+    {
+        _isPitLimiterActive = true;
+        return;
+    }
+
+    if (argument.Equals("LMT_OFF", StringComparison.InvariantCultureIgnoreCase))
+    {
+        _isPitLimiterActive = false;
         return;
     }
 
