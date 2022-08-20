@@ -38,6 +38,7 @@ private class RaceData
     }
 }
 
+private readonly string CODE_VERSION = "6.1.0";
 private const int CONNECTION_TIMEOUT = 3000;
 private List<IMyMotorSuspension> _suspensions;
 private IMyCockpit _mainController;
@@ -86,6 +87,8 @@ public void Save()
 
 public void Main(string argument, UpdateType updateSource)
 {
+    Echo($"Running FSESS {CODE_VERSION}");
+
     HandleArgument(argument);
     UpdateDownforce();
     UpdatePitLimiter();
@@ -288,9 +291,9 @@ private void SetupDisplay()
 {
     _stringBuilder = new StringBuilder();
     _displays = new List<IMyTextSurface>
-{
-Me.GetSurface(0)
-};
+    {
+        Me.GetSurface(0)
+    };
 
     var display = (IMyTextSurface)GridTerminalSystem.GetBlockWithName(DISPLAY_NAME);
 
