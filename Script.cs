@@ -4,7 +4,7 @@ private const float DEFAULT_SUSPENSION_STRENGTH = 10f;
 private const float DEFAULT_SUSPENSION_POWER = 100f;
 private const float DEFAULT_SUSPENSION_SPEED_LIMIT = 999;
 private const string DISPLAY_NAME = "Driver LCD";
-private const string BRAKELIGHT_NAME = "Brakelight";
+private const string BRAKELIGHT_GROUP_NAME = "Brakelight";
 
 //************ DO NOT MODIFY BELLOW HERE ************
 
@@ -38,6 +38,7 @@ private class RaceData
     }
 }
 
+private const int CONNECTION_TIMEOUT = 3000;
 private List<IMyMotorSuspension> _suspensions;
 private IMyCockpit _mainController;
 private List<IMyTextSurface> _displays;
@@ -52,9 +53,9 @@ private float _minTireFriction = 0;
 private float _maxTireFriction = 100;
 private float _tireWearFactor = 1;
 private float _friction = 100;
-private bool _isConnected = false;
 private long _address = -1;
 private IMyBroadcastListener _broadcastListener;
+private int _connectionTimeout;
 
 public Program()
 {
@@ -107,39 +108,42 @@ private void UpdateDownforce()
 
 private void UpdateCommunication()
 {
-    if (_isConnected)
+    var unisource = IGC.UnicastListener;
+
+    if (!unisource.HasPendingMessage)
     {
-        var unisource = IGC.UnicastListener;
+        _connectionTimeout -= (int)Runtime.TimeSinceLastRun.TotalMilliseconds;
 
-        while (unisource.HasPendingMessage)
+        if (_broadcastListener.HasPendingMessage && _connectionTimeout <= 0)
         {
-            var messageUni = unisource.AcceptMessage();
+            var message = _broadcastListener.AcceptMessage();
 
-            if (messageUni.Tag == "RaceData")
+            if (message.Tag == "Address")
             {
-                _data.Map(messageUni.Data.ToString());
-            }
-
-            if (messageUni.Tag == "Argument")
-            {
-                HandleArgument(messageUni.Data.ToString());
+                _address = Convert.ToInt64(message.Data.ToString());
+                IGC.SendUnicastMessage(_address, "Register", $"{Me.CubeGrid.CustomName};{IGC.Me}");
             }
         }
 
         return;
     }
 
-    if (_broadcastListener.HasPendingMessage)
+    while (unisource.HasPendingMessage)
     {
-        var message = _broadcastListener.AcceptMessage();
+        var messageUni = unisource.AcceptMessage();
 
-        if (message.Tag == "Address")
+        if (messageUni.Tag == "RaceData")
         {
-            _address = Convert.ToInt64(message.Data.ToString());
-            IGC.SendUnicastMessage(_address, "Register", $"{Me.CubeGrid.CustomName};{IGC.Me}");
-            _isConnected = true;
+            _data.Map(messageUni.Data.ToString());
+        }
+
+        if (messageUni.Tag == "Argument")
+        {
+            HandleArgument(messageUni.Data.ToString());
         }
     }
+
+    _connectionTimeout = CONNECTION_TIMEOUT;
 }
 
 private void UpdateDisplays()
@@ -157,6 +161,7 @@ private void UpdateDisplays()
     _stringBuilder.AppendLine($"TIRE ({tireCompoundIndicator})..: {strTireWear,3}%");
     _stringBuilder.AppendLine($"TIME.: {_data.CurrentLapTime}");
     _stringBuilder.AppendLine($"BEST.: {_data.BestLapTime}");
+    if (_connectionTimeout <= 0) _stringBuilder.AppendLine($"NO CONNECTION");
 
     foreach (var d in _displays)
     {
@@ -306,7 +311,7 @@ private void SetupBrakelights()
 {
     var lights = new List<IMyTerminalBlock>();
 
-    GridTerminalSystem.GetBlockGroupWithName(BRAKELIGHT_NAME)
+    GridTerminalSystem.GetBlockGroupWithName(BRAKELIGHT_GROUP_NAME)
         .GetBlocks(lights, b => b.CubeGrid == Me.CubeGrid);
 
     _brakelights = new List<IMyTerminalBlock>();
