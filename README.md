@@ -1,13 +1,12 @@
 # FSESS - Formula Space Engineers Standard Script
 
-### Version 6.1.0
+### Version 6.2.0
 
 This is the standard script that all cars racing on FSE should be using on Season 6 and it features:
 - Pit Limiter
 - Drag Reduction System (DRS)
 - Onboard Race Information
 - Tire Degradation
-- Dynamic Thruster Downforce
 
 ## How to Setup
 1. Place a Programmable Block on your car;
@@ -57,9 +56,6 @@ In order to change wheels, you have to go to the pits, with the Pit Limiter acti
   
 - **Is there anyway to stop the tire degradation?**
   - No, unless you turn off your Programable Block (which would be cheating during a race). There is a discussion about preventing tire degradation when Pit Limiter is active, but for now, make sure to change your tires before it's too late.
-  
-- **What is the Dynamic Thruster Downforce?**
-  - It is an experimental feature which will use a downwards thruster on your car to apply downforce to it proportional to the current speed. Its usage still under discussion, but if you want to try, just put a thruster on your car and recompile the script, it will detect it and control it. It's an attempt to reduce the bounceness experienced by the drivers during the races.
 
 - **Why these values for the tires?**
   - Well, the lifespans are based on the Fibonacci sequence, notice that if you sum the lifespan of ULTRA + SOFT = MEDIUM, also SOFT + MEDIUM = HARD, this allow a good variety of strategies on the races. Also, the friction ranges are planned in a way so all the compounds have 20% of the lifespan bellow 50% friction, so people can optionally push the wheels to the limit even if they are getting a low performance. Your onboard display gonna show a "Tires Worn" warning when it reachs 20%, you can use that as a sign to go to the pits.
