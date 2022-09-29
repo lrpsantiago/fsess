@@ -1,526 +1,60 @@
 private readonly string DRIVER_NAME = "Guest";
 private readonly int DRIVER_NUMBER = 99;
 private const float DEFAULT_SUSPENSION_STRENGTH = 10f;
-private const float DEFAULT_SUSPENSION_POWER = 100f;
 private const float DEFAULT_SUSPENSION_SPEED_LIMIT = 999;
 private const string DISPLAY_NAME = "Driver LCD";
 private const string BRAKELIGHT_GROUP_NAME = "Brakelight";
 
-//************ DO NOT MODIFY BELLOW HERE ************
-
-enum TireCompound
-{
-    Ultra,  //100% ~5 minutes
-    Soft,   //90%  ~8 minutes
-    Medium, //75%  ~13 minutes
-    Hard    //60%  ~21 minutes
-}
-
-private class RaceData
-{
-    public int Position { get; set; }
-    public int Laps { get; set; }
-    public string CurrentLapTime { get; set; } = "--:--.---";
-    public string BestLapTime { get; set; } = "--:--.---";
-
-    public void Map(string data)
-    {
-        try
-        {
-            var values = data.Split(';');
-
-            Laps = Convert.ToInt32(values[0]);
-            Position = Convert.ToInt32(values[1]);
-            CurrentLapTime = values[2];
-            BestLapTime = values[3];
-        }
-        catch (Exception) { }
-    }
-}
-
-private readonly string CODE_VERSION = "6.2.0";
-private const int CONNECTION_TIMEOUT = 3000;
-private const int TIRE_SAVING_COOLDOWN = 500;
-private List<IMyMotorSuspension> _suspensions;
-private IMyCockpit _mainController;
-private List<IMyTextSurface> _displays;
-private bool _isPitLimiterActive;
-private bool _isDrsActive;
-private StringBuilder _stringBuilder;
-private RaceData _data;
-private List<IMyTerminalBlock> _brakelights;
-private TireCompound _currentTireCompound;
-private float _minTireFriction = 0;
-private float _maxTireFriction = 100;
-private float _tireWearFactor = 1;
-private float _friction = 100;
-private long _address = -1;
-private IMyBroadcastListener _broadcastListener;
-private int _connectionTimeout;
-private int _tireSavingCooldown;
-private DateTime _lastTimeStamp;
-private float _delta;
-
-public Program()
-{
-    _data = new RaceData();
-
-    SetupGridName();
-    SetupController();
-    SetupSuspensions();
-    SetupDisplay();
-    SetupBrakelights();
-    SetupAntenna();
-    LoadTires();
-    SetupBroadcastListener();
-
-    Runtime.UpdateFrequency = UpdateFrequency.Update10;
-    _lastTimeStamp = DateTime.Now;
-}
-
-public void Save()
-{
-    // Called when the program needs to save its state. Use
-    // this method to save your state to the Storage field
-    // or some other means. 
-    // 
-    // This method is optional and can be removed if not
-    // needed.
-}
-
-public void Main(string argument, UpdateType updateSource)
-{
-    var currentTimeStamp = DateTime.Now;
-    _delta = (float)(currentTimeStamp - _lastTimeStamp).TotalMilliseconds / 1000;
-
-    Echo($"Running FSESS {CODE_VERSION}");
-
-    HandleArgument(argument);
-    UpdatePitLimiter();
-    UpdateDrs();
-    UpdateTireDegradation();
-    UpdateCommunication();
-    UpdateDisplays();
-
-    _lastTimeStamp = currentTimeStamp;
-}
-
-private void UpdateCommunication()
-{
-    var unisource = IGC.UnicastListener;
-
-    if (!unisource.HasPendingMessage)
-    {
-        _connectionTimeout -= (int)(_delta * 1000);
-
-        if (_broadcastListener.HasPendingMessage && _connectionTimeout <= 0)
-        {
-            var message = _broadcastListener.AcceptMessage();
-
-            if (message.Tag == "Address")
-            {
-                _address = Convert.ToInt64(message.Data.ToString());
-                IGC.SendUnicastMessage(_address, "Register", $"{Me.CubeGrid.CustomName};{IGC.Me}");
-            }
-        }
-
-        return;
-    }
-
-    while (unisource.HasPendingMessage)
-    {
-        var messageUni = unisource.AcceptMessage();
-
-        if (messageUni.Tag == "RaceData")
-        {
-            _data.Map(messageUni.Data.ToString());
-        }
-
-        if (messageUni.Tag == "Argument")
-        {
-            HandleArgument(messageUni.Data.ToString());
-        }
-    }
-
-    _connectionTimeout = CONNECTION_TIMEOUT;
-}
-
-private void UpdateDisplays()
-{
-    _stringBuilder.Clear();
-
-    var speed = _mainController.GetShipSpeed();
-    var tireWear = ((_friction - _minTireFriction) / (_maxTireFriction - _minTireFriction)) * 100f;
-    var tireCompoundIndicator = _currentTireCompound.ToString().First();
-    var strTireWear = ((int)Math.Floor(tireWear)).ToString();
-
-    _stringBuilder.AppendLine($"{speed:F2} m/s");
-    _stringBuilder.AppendLine(_isPitLimiterActive ? "PIT LIMITER" : tireWear < 20 ? "TIRES WORN" : "");
-    _stringBuilder.AppendLine($"POS: {_data.Position:00}  LAP: {_data.Laps:00}");
-    _stringBuilder.AppendLine($"TIRE ({tireCompoundIndicator})..: {strTireWear,3}%");
-    _stringBuilder.AppendLine($"TIME.: {_data.CurrentLapTime}");
-    _stringBuilder.AppendLine($"BEST.: {_data.BestLapTime}");
-
-    if (_connectionTimeout <= 0) _stringBuilder.AppendLine($"NO CONNECTION");
-
-    foreach (var d in _displays)
-    {
-        d.WriteText(_stringBuilder);
-
-        var color = !_isDrsActive
-            ? Color.Black
-            : speed < 100
-                ? Color.DarkBlue
-                : Color.DarkRed;
-
-        d.BackgroundColor = color;
-        d.ScriptBackgroundColor = color;
-    }
-}
-
-private void UpdatePitLimiter()
-{
-    if (!_isPitLimiterActive)
-    {
-        foreach (var s in _suspensions)
-        {
-            s.Power = DEFAULT_SUSPENSION_POWER;
-            s.SetValueFloat("Speed Limit", DEFAULT_SUSPENSION_SPEED_LIMIT * 3.6f);
-        }
-
-        return;
-    }
-
-    foreach (var s in _suspensions)
-    {
-        s.Power = 20f;
-        s.SetValueFloat("Speed Limit", 26f * 3.6f);
-    }
-
-    var speed = _mainController.GetShipSpeed();
-    _mainController.HandBrake = speed > 24;
-}
-
-private void UpdateDrs()
-{
-    var isBreaking = _mainController.MoveIndicator.Z > 0
-        || _mainController.MoveIndicator.Y > 0
-        || _mainController.HandBrake;
-
-    if (isBreaking)
-    {
-        _isDrsActive = false;
-    }
-
-    for (int i = 0; i < _suspensions.Count; i++)
-    {
-        var s = _suspensions[i];
-        s.Strength = !_isDrsActive ? DEFAULT_SUSPENSION_STRENGTH : 100;
-    }
-}
-
-private void UpdateTireDegradation()
-{
-    var speed = _mainController.GetShipSpeed();
-
-    if (speed < 1)
-    {
-        return;
-    }
-
-    var speedFactor = (float)MathHelper.Clamp(speed, 0, 90) / 90;
-    var wearRate = _tireWearFactor * speedFactor * _delta;
-
-    _friction -= wearRate;
-    _friction = MathHelper.Clamp(_friction, _minTireFriction, _maxTireFriction);
-
-    foreach (var s in _suspensions)
-    {
-        s.Friction = _friction;
-    }
-
-    if (_friction <= _minTireFriction)
-    {
-        if (_suspensions.All(s => s.IsAttached))
-        {
-            var rand = new Random().Next(4);
-            _suspensions[rand].Detach();
-        }
-    }
-
-    SaveTires();
-}
-
-private void SetupGridName()
-{
-    if (DRIVER_NUMBER <= 0 && DRIVER_NUMBER > 99)
-    {
-        throw new Exception("DRIVER_NUMBER should be between 1 and 99");
-    }
-
-    Me.CubeGrid.CustomName = $"{DRIVER_NUMBER}-{DRIVER_NAME.Trim()}";
-}
-
-private void SetupController()
-{
-    var controllerList = new List<IMyCockpit>();
-    GridTerminalSystem.GetBlocksOfType(controllerList);
-    _mainController = controllerList.FirstOrDefault();
-
-    if (_mainController == null)
-    {
-        throw new Exception("No cockpit!");
-    }
-}
-
-private void SetupSuspensions()
-{
-    _suspensions = new List<IMyMotorSuspension>();
-    GridTerminalSystem.GetBlocksOfType(_suspensions, s => s.CubeGrid == Me.CubeGrid);
-
-    if (_suspensions == null || _suspensions.Count != 4)
-    {
-        throw new Exception("Need 4 suspensions!");
-    }
-}
-
-private void SetupDisplay()
-{
-    _stringBuilder = new StringBuilder();
-    _displays = new List<IMyTextSurface> { Me.GetSurface(0) };
-
-    var display = (IMyTextSurface)GridTerminalSystem.GetBlockWithName(DISPLAY_NAME);
-
-    if (display != null)
-    {
-        _displays.Add(display);
-    }
-
-    foreach (var d in _displays)
-    {
-        d.ContentType = ContentType.TEXT_AND_IMAGE;
-        d.Alignment = TextAlignment.CENTER;
-        d.Font = "Monospace";
-    }
-}
-
-private void SetupBrakelights()
-{
-    var lights = new List<IMyTerminalBlock>();
-
-    GridTerminalSystem.GetBlockGroupWithName(BRAKELIGHT_GROUP_NAME)
-        .GetBlocks(lights, b => b.CubeGrid == Me.CubeGrid);
-
-    _brakelights = new List<IMyTerminalBlock>();
-
-    foreach (var l in lights)
-    {
-        if (l is IMyLightingBlock)
-        {
-            var light = (IMyLightingBlock)l;
-            light.Intensity = 5f;
-            light.BlinkLength = 0f;
-            light.BlinkIntervalSeconds = 0f;
-        }
-        else if (l is IMyTextPanel)
-        {
-            var lcd = (IMyTextPanel)l;
-            lcd.ContentType = ContentType.TEXT_AND_IMAGE;
-            lcd.WriteText("", false);
-        }
-
-        _brakelights.Add(l);
-    }
-}
-
-private void LoadTires()
-{
-    if (string.IsNullOrWhiteSpace(Me.CustomData))
-    {
-        SetTires(TireCompound.Ultra);
-        return;
-    }
-
-    var values = Me.CustomData.Split(';');
-
-    if (values.Length < 2)
-    {
-        SetTires(TireCompound.Ultra);
-        return;
-    }
-
-    var compoundChar = Convert.ToChar(values[0]);
-    var friction = (float)Convert.ToDouble(values[1]);
-
-    switch (compoundChar)
-    {
-        case 'U': SetTires(TireCompound.Ultra); break;
-        case 'S': SetTires(TireCompound.Soft); break;
-        case 'M': SetTires(TireCompound.Medium); break;
-        case 'H': SetTires(TireCompound.Hard); break;
-        default: SetTires(TireCompound.Ultra); break;
-    }
-
-    _friction = friction;
-}
-
-private void SetupAntenna()
-{
-    var antennas = new List<IMyRadioAntenna>();
-    GridTerminalSystem.GetBlocksOfType(antennas);
-    var antenna = antennas.FirstOrDefault();
-
-    if (antenna == null)
-    {
-        return;
-    }
-
-    antenna.Radius = 5000;
-    antenna.EnableBroadcasting = true;
-    antenna.HudText = $"{DRIVER_NUMBER}-{DRIVER_NAME}";
-}
-
-private void SetupBroadcastListener()
-{
-    IGC.RegisterBroadcastListener("Address");
-    var listeners = new List<IMyBroadcastListener>();
-    IGC.GetBroadcastListeners(listeners);
-    _broadcastListener = listeners.FirstOrDefault();
-}
-
-private void HandleArgument(string argument)
-{
-    if (argument.Equals("LMT", StringComparison.InvariantCultureIgnoreCase))
-    {
-        _isPitLimiterActive = !_isPitLimiterActive;
-        return;
-    }
-
-    if (argument.Equals("LMT_ON", StringComparison.InvariantCultureIgnoreCase))
-    {
-        _isPitLimiterActive = true;
-        return;
-    }
-
-    if (argument.Equals("LMT_OFF", StringComparison.InvariantCultureIgnoreCase))
-    {
-        _isPitLimiterActive = false;
-        return;
-    }
-
-    if (argument.Equals("DRS", StringComparison.InvariantCultureIgnoreCase))
-    {
-        _isDrsActive = !_isDrsActive;
-        return;
-    }
-
-    if (argument.Equals("ULTRA", StringComparison.InvariantCultureIgnoreCase))
-    {
-        ChangeTires(TireCompound.Ultra);
-    }
-
-    if (argument.Equals("SOFT", StringComparison.InvariantCultureIgnoreCase))
-    {
-        ChangeTires(TireCompound.Soft);
-    }
-
-    if (argument.Equals("MEDIUM", StringComparison.InvariantCultureIgnoreCase))
-    {
-        ChangeTires(TireCompound.Medium);
-    }
-
-    if (argument.Equals("HARD", StringComparison.InvariantCultureIgnoreCase))
-    {
-        ChangeTires(TireCompound.Hard);
-    }
-}
-
-private void ChangeTires(TireCompound compound)
-{
-    if (!_isPitLimiterActive || _mainController.GetShipSpeed() > 1)
-    {
-        return;
-    }
-
-    SetTires(compound);
-    SaveTires(true);
-}
-
-private void SetTires(TireCompound compound)
-{
-    var lightColor = Color.White;
-
-    switch (compound)
-    {
-        case TireCompound.Ultra:
-            _maxTireFriction = 100;
-            _minTireFriction = 37.5f;
-            _tireWearFactor = (_maxTireFriction - _minTireFriction) / (60 * 5);
-            lightColor = Color.Magenta;
-            break;
-
-        case TireCompound.Soft:
-            _maxTireFriction = 90;
-            _minTireFriction = 40;
-            _tireWearFactor = (_maxTireFriction - _minTireFriction) / (60 * 8);
-            lightColor = Color.Red;
-            break;
-
-        case TireCompound.Medium:
-            _maxTireFriction = 75;
-            _minTireFriction = 43.75f;
-            _tireWearFactor = (_maxTireFriction - _minTireFriction) / (60 * 13);
-            lightColor = Color.Yellow;
-            break;
-
-        case TireCompound.Hard:
-            _maxTireFriction = 60;
-            _minTireFriction = 47.5f;
-            _tireWearFactor = (_maxTireFriction - _minTireFriction) / (60 * 21);
-            lightColor = Color.White;
-            break;
-
-        default:
-            break;
-    }
-
-    _friction = _maxTireFriction;
-    _currentTireCompound = compound;
-
-    SetBrakelightColor(lightColor);
-
-    foreach (var s in _suspensions)
-    {
-        s.ApplyAction("Add Top Part");
-    }
-}
-
-private void SetBrakelightColor(Color color)
-{
-    foreach (var l in _brakelights)
-    {
-        if (l is IMyLightingBlock)
-        {
-            var light = (IMyLightingBlock)l;
-            light.Color = color;
-        }
-        else if (l is IMyTextPanel)
-        {
-            var lcd = (IMyTextPanel)l;
-            lcd.BackgroundColor = color;
-        }
-    }
-}
-
-private void SaveTires(bool force = false)
-{
-    _tireSavingCooldown -= (int)(_delta * 1000);
-
-    if (!force && _tireSavingCooldown > 0)
-    {
-        return;
-    }
-
-    Me.CustomData = $"{_currentTireCompound.ToString().First()};{_friction}";
-    _tireSavingCooldown = TIRE_SAVING_COOLDOWN;
-}
+enum Õ{Ý,Ö,Ø,Ù}enum Ú{Û,Ü,Þ,Ô}class Ó{public int Ê{get;set;}public int Ä{get;set;}public int Å{get;set;}public string Æ{
+get;set;}="--:--.---";public string Ç{get;set;}="--:--.---";public Ú È{get;set;}public void É(string Ë){try{var r=Ë.Split(
+';');Ä=Convert.ToInt32(r[0]);Ê=Convert.ToInt32(r[1]);Æ=r[2];Ç=r[3];}catch(Exception){}}}string Ì="7.0.0 Beta";const int Í=
+3000;const int Î=500;const float Ï=90f;const char Ð='\u2191';const char Ñ='\u2193';const char Ã='\u2588';const char ß=
+'\u2592';const char à='\u2591';List<IMyMotorSuspension>í;IMyCockpit î;List<IMyTextSurface>ï;bool ð;bool ñ;bool ò;StringBuilder ó
+;Ó õ;List<IMyTerminalBlock>ý;Õ ö;float ø=0;float ù=100;float ú=1;float û=100;long ü=-1;IMyBroadcastListener þ;int ô;int ì
+;DateTime ã;float á;float â=0.5f;Program(){õ=new Ó();F();H();I();J();M();v();q();y();Runtime.UpdateFrequency=
+UpdateFrequency.Update10;ã=DateTime.Now;}void Save(){}void Main(string µ,UpdateType ä){var ê=DateTime.Now;á=(float)(ê-ã).
+TotalMilliseconds/1000;Echo($"Running FSESS {Ì}");ª(µ);T();X();V();P();å();é();ã=ê;}void å(){var æ=IGC.UnicastListener;if(!æ.
+HasPendingMessage){ô-=(int)(á*1000);if(þ.HasPendingMessage&&ô<=0){var ç=þ.AcceptMessage();if(ç.Tag=="Address"){ü=Convert.ToInt64(ç.Data.
+ToString());IGC.SendUnicastMessage(ü,"Register",$"{Me.CubeGrid.CustomName};{IGC.Me}");}}return;}while(æ.HasPendingMessage){var è
+=æ.AcceptMessage();if(è.Tag=="RaceData"){õ.É(è.Data.ToString());}if(è.Tag=="Argument"){ª(è.Data.ToString());}}ô=Í;}void é
+(){ó.Clear();var G=î.GetShipSpeed();var ë=((û-ø)/(ù-ø))*100f;var Ò=j();var Â=((int)Math.Floor(ë)).ToString();var O=
+$"{G:F0}m/s";var R=m();ó.AppendLine(O+R.PadLeft(16-O.Length));ó.AppendLine(ð?"PIT LIMITER":ë<20?"TIRES WORN":"");ó.AppendLine(
+$"P:{õ.Ê:00}     L:{õ.Ä:00}/{õ.Å:00}");ó.AppendLine($"TYRE ({Ò})..: {Â,3}%");ó.AppendLine($"TIME.: {õ.Æ}");ó.AppendLine($"BEST.: {õ.Ç}");if(ô<=0)ó.AppendLine
+($"NO CONNECTION");foreach(var L in ï){L.WriteText(ó);var S=!ñ?Color.Black:G<100?Color.DarkBlue:Color.DarkRed;L.
+BackgroundColor=S;L.ScriptBackgroundColor=S;}}void T(){if(!ð){foreach(var D in í){D.Power=Ï;D.SetValueFloat("Speed Limit",
+DEFAULT_SUSPENSION_SPEED_LIMIT*3.6f);}return;}foreach(var D in í){D.Power=20f;D.SetValueFloat("Speed Limit",26f*3.6f);}var G=î.GetShipSpeed();î.
+HandBrake=G>24;}void X(){var U=î.MoveIndicator.Z>0||î.MoveIndicator.Y>0||î.HandBrake||õ.Ê==1;if(U){ñ=false;}for(int Q=0;Q<í.Count
+;Q++){var D=í[Q];D.Strength=!ñ?DEFAULT_SUSPENSION_STRENGTH:100;}}void V(){if(ð){ò=false;}var W=î.MoveIndicator.Z<0;var G=
+î.GetShipSpeed();var Y=(float)MathHelper.Clamp(G/90,0,1);if(G>1){if(!ò){â+=(1f/240)*Y*á;}else if(W){â+=-(1f/120)*Y*á;}}â=
+MathHelper.Clamp(â,0,1);if(â<=0){ò=false;}foreach(var D in í){D.Power=!ò?Ï:100;}}void P(){var G=î.GetShipSpeed();if(G<1){return;}
+var B=(float)MathHelper.Clamp(G,0,90)/90;var C=ú*B*á;û-=C;û=MathHelper.Clamp(û,ø,ù);foreach(var D in í){D.Friction=û;}if(û
+<=ø){if(í.All(D=>D.IsAttached)){var E=new Random().Next(4);í[E].Detach();}}g();}void F(){if(DRIVER_NUMBER<=0&&
+DRIVER_NUMBER>99){throw new Exception("DRIVER_NUMBER should be between 1 and 99");}Me.CubeGrid.CustomName=
+$"{DRIVER_NUMBER}-{DRIVER_NAME.Trim()}";}void H(){var N=new List<IMyCockpit>();GridTerminalSystem.GetBlocksOfType(N);î=N.FirstOrDefault();if(î==null){throw new
+Exception("No cockpit!");}}void I(){í=new List<IMyMotorSuspension>();GridTerminalSystem.GetBlocksOfType(í,D=>D.CubeGrid==Me.
+CubeGrid);if(í==null||í.Count!=4){throw new Exception("Need 4 suspensions!");}}void J(){ó=new StringBuilder();ï=new List<
+IMyTextSurface>{Me.GetSurface(0)};var K=(IMyTextSurface)GridTerminalSystem.GetBlockWithName(DISPLAY_NAME);if(K!=null){ï.Add(K);}
+foreach(var L in ï){L.ContentType=ContentType.TEXT_AND_IMAGE;L.Alignment=TextAlignment.CENTER;L.Font="Monospace";}}void M(){var
+A=new List<IMyTerminalBlock>();GridTerminalSystem.GetBlockGroupWithName(BRAKELIGHT_GROUP_NAME).GetBlocks(A,Z=>Z.CubeGrid
+==Me.CubeGrid);ý=new List<IMyTerminalBlock>();foreach(var a in A){if(a is IMyLightingBlock){var e=(IMyLightingBlock)a;e.
+Intensity=5f;e.BlinkLength=0f;e.BlinkIntervalSeconds=0f;}else if(a is IMyTextPanel){var f=(IMyTextPanel)a;f.ContentType=
+ContentType.TEXT_AND_IMAGE;f.WriteText("",false);}ý.Add(a);}}void q(){if(string.IsNullOrWhiteSpace(Me.CustomData)){Á(Õ.Ý);return;}
+var r=Me.CustomData.Split(';');if(r.Length<2){Á(Õ.Ý);return;}var t=Convert.ToChar(r[0]);var u=(float)Convert.ToDouble(r[1])
+;switch(t){case'U':Á(Õ.Ý);break;case'S':Á(Õ.Ö);break;case'M':Á(Õ.Ø);break;case'H':Á(Õ.Ù);break;default:Á(Õ.Ý);break;}û=u;
+}void v(){var x=new List<IMyRadioAntenna>();GridTerminalSystem.GetBlocksOfType(x);var À=x.FirstOrDefault();if(À==null){
+return;}À.Radius=5000;À.EnableBroadcasting=true;À.HudText=$"{DRIVER_NUMBER}-{DRIVER_NAME}";}void y(){IGC.
+RegisterBroadcastListener("Address");var z=new List<IMyBroadcastListener>();IGC.GetBroadcastListeners(z);þ=z.FirstOrDefault();}void ª(string µ){
+if(µ.Equals("LMT",StringComparison.InvariantCultureIgnoreCase)){ð=!ð;return;}if(µ.Equals("LMT_ON",StringComparison.
+InvariantCultureIgnoreCase)){ð=true;return;}if(µ.Equals("LMT_OFF",StringComparison.InvariantCultureIgnoreCase)){ð=false;return;}if(µ.Equals("DRS",
+StringComparison.InvariantCultureIgnoreCase)){ñ=!ñ;return;}if(µ.Equals("ERS",StringComparison.InvariantCultureIgnoreCase)){ò=!ò;return;}
+if(µ.Equals("ULTRA",StringComparison.InvariantCultureIgnoreCase)){º(Õ.Ý);return;}if(µ.Equals("SOFT",StringComparison.
+InvariantCultureIgnoreCase)){º(Õ.Ö);return;}if(µ.Equals("MEDIUM",StringComparison.InvariantCultureIgnoreCase)){º(Õ.Ø);return;}if(µ.Equals("HARD",
+StringComparison.InvariantCultureIgnoreCase)){º(Õ.Ù);return;}}void º(Õ w){if(!ð||î.GetShipSpeed()>1){return;}Á(w);g(true);}void Á(Õ w){
+var p=Color.White;switch(w){case Õ.Ý:ù=100;ø=37.5f;ú=(ù-ø)/(60*5);p=Color.Magenta;break;case Õ.Ö:ù=90;ø=40;ú=(ù-ø)/(60*8);p
+=Color.Red;break;case Õ.Ø:ù=75;ø=43.75f;ú=(ù-ø)/(60*13);p=Color.Yellow;break;case Õ.Ù:ù=60;ø=47.5f;ú=(ù-ø)/(60*21);p=
+Color.White;break;default:break;}û=ù;ö=w;c(p);foreach(var D in í){D.ApplyAction("Add Top Part");}}void c(Color S){foreach(var
+a in ý){if(a is IMyLightingBlock){var e=(IMyLightingBlock)a;e.Color=S;}else if(a is IMyTextPanel){var f=(IMyTextPanel)a;f
+.BackgroundColor=S;}}}void g(bool h=false){ì-=(int)(á*1000);if(!h&&ì>0){return;}var k=j();Me.CustomData=$"{k};{û}";ì=Î;}
+char j(){var k='U';switch(ö){case Õ.Ý:k='U';break;case Õ.Ö:k='S';break;case Õ.Ø:k='M';break;case Õ.Ù:k='H';break;}return k;}
+string m(){const int n=6;var o=ò?Ñ:â<1?Ð:'-';var R=o+"E:";for(int Q=0;Q<n;Q++){var Y=1f/n;if(â>Y*Q){if(â<Y*(Q+1)){R+=ß;
+continue;}R+=Ã;}else{R+=à;}}return R;}
