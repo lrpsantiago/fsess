@@ -1,10 +1,11 @@
 # FSESS - Formula Space Engineers Standard Script
 
-### Version 6.2.0
+### Version 7.0.0 Beta
 
 This is the standard script that all cars racing on FSE should be using on Season 6 and it features:
 - Pit Limiter
 - Drag Reduction System (DRS)
+- Energy Recovery System (ERS)
 - Onboard Race Information
 - Tire Degradation
 
@@ -33,6 +34,7 @@ Here's a list of all arguments supported by the current script:
 - LMT_ON  => Activate Pit Limiter
 - LMT_OFF => Deactivate Pit Limiter
 - DRS     => Toggle Drag Reduction System (DRS)
+- ERS     => Toggle Energy Recovery System (ERS)
 - ULTRA   => Switch to Ultra-Soft Tires
 - SOFT    => Switch to Soft Tires
 - MEDIUM  => Switch to Medium Tires
