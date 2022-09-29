@@ -7,8 +7,8 @@ private const string BRAKELIGHT_GROUP_NAME = "Brakelight";
 
 enum Õ{Ý,Ö,Ø,Ù}enum Ú{Û,Ü,Þ,Ô}class Ó{public int Ê{get;set;}public int Ä{get;set;}public int Å{get;set;}public string Æ{
 get;set;}="--:--.---";public string Ç{get;set;}="--:--.---";public Ú È{get;set;}public void É(string Ë){try{var r=Ë.Split(
-';');Ä=Convert.ToInt32(r[0]);Ê=Convert.ToInt32(r[1]);Æ=r[2];Ç=r[3];}catch(Exception){}}}string Ì="7.0.0 Beta";const int Í=
-3000;const int Î=500;const float Ï=90f;const char Ð='\u2191';const char Ñ='\u2193';const char Ã='\u2588';const char ß=
+';');Ä=Convert.ToInt32(r[0]);Ê=Convert.ToInt32(r[1]);Æ=r[2];Ç=r[3];}catch(Exception){}}}string Ì="7.0.0 Beta 2";const int Í
+=3000;const int Î=500;const float Ï=80f;const char Ð='\u2191';const char Ñ='\u2193';const char Ã='\u2588';const char ß=
 '\u2592';const char à='\u2591';List<IMyMotorSuspension>í;IMyCockpit î;List<IMyTextSurface>ï;bool ð;bool ñ;bool ò;StringBuilder ó
 ;Ó õ;List<IMyTerminalBlock>ý;Õ ö;float ø=0;float ù=100;float ú=1;float û=100;long ü=-1;IMyBroadcastListener þ;int ô;int ì
 ;DateTime ã;float á;float â=0.5f;Program(){õ=new Ó();F();H();I();J();M();v();q();y();Runtime.UpdateFrequency=
