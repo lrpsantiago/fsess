@@ -10,7 +10,7 @@ private const bool AUTO_ERS = false; //Activates ERS whenever it's 100% Charge (
 
 enum Ø{Ù,Ú,Û,Ü}enum Ý{Þ,ß,á,Ö}class Å{public int Í{get;set;}public int Æ{get;set;}public int Ç{get;set;}public string È{
 get;set;}="--:--.---";public string É{get;set;}="--:--.---";public Ý Ê{get;set;}public void Ë(string Ì){try{var v=Ì.Split(
-';');Æ=Convert.ToInt32(v[0]);Í=Convert.ToInt32(v[1]);È=v[2];É=v[3];}catch(Exception){}}}string Õ="7.0.0 Beta 3";const int Î
+';');Æ=Convert.ToInt32(v[0]);Í=Convert.ToInt32(v[1]);È=v[2];É=v[3];}catch(Exception){}}}string Õ="7.0.0 Beta 4";const int Î
 =3000;const int Ï=500;const float Ð=80f;const char Ñ='\u2191';const char Ò='\u2193';const char Ó='\u2588';const char Ô=
 '\u2592';const char à='\u2591';List<IMyMotorSuspension>â;IMyCockpit ă;List<IMyTextSurface>ð;bool ñ;bool ò;bool ó;StringBuilder ô
 ;Å õ;List<IMyTerminalBlock>ö;List<IMyLightingBlock>ø;List<IMyLightingBlock>ù;Ø ú;float û=0;float ü=100;float ý=1;float þ=
