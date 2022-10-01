@@ -1,8 +1,8 @@
 # FSESS - Formula Space Engineers Standard Script
 
-### Version 7.0.0 Beta
+### Version 7.0.0 Beta 2
 
-This is the standard script that all cars racing on FSE should be using on Season 6 and it features:
+This is the standard script that all cars racing on FSE should be using on Season 7 and it features:
 - Pit Limiter
 - Drag Reduction System (DRS)
 - Energy Recovery System (ERS)
@@ -51,7 +51,10 @@ In order to change wheels, you have to go to the pits, with the Pit Limiter acti
 
 ## FAQ
 - **How does the DRS works?**
-  - It set the strength of all your suspensions to 100% while active, which allows your car to reach 100m/s. But be careful, it might only be good to use on long straights, also bumpy surfaces might put your car in the air while DRS is active.
+  - It sets the strength of all your suspensions to 100% while active, which allows your car to reach 100m/s. But be careful, it might only be good to use on long straights, also bumpy surfaces might put your car in the air while DRS is active.
+  
+- **How does the ERS works?**
+  - It sets the power of all your suspensions to 100% while active, which gives more acceleration to your car consuming the ERS charge. When deactivated, it will recharge the ERS while moving.
   
 - **Do I need to setup FSESS script on my car to be detected by the race control script?"**
   - No, once you cross the start line you are already being tracked. But in order to see your onboard race data, using commands and having the tire degradation effect on your car, you need to setup this script on your car.
