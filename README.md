@@ -1,6 +1,6 @@
 # FSESS - Formula Space Engineers Standard Script
 
-### Version 7.0.0 Beta 2
+### Version 7.0.0 Beta 3
 
 This is the standard script that all cars racing on FSE should be using on Season 7 and it features:
 - Pit Limiter
