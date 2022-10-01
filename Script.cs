@@ -46,11 +46,11 @@ IMyTextPanel){var N=(IMyTextPanel)L;N.ContentType=ContentType.TEXT_AND_IMAGE;N.W
 IMyLightingBlock>();var P=new List<IMyTerminalBlock>();var Q=GridTerminalSystem.GetBlockGroupWithName(DRS_LIGHTS_GROUP_NAME);if(Q==null)
 {return;}Q.GetBlocks(P,K=>K.CubeGrid==Me.CubeGrid);foreach(var L in P){var M=(IMyLightingBlock)L;ù.Add(M);}}void t(){ø=
 new List<IMyLightingBlock>();var P=new List<IMyTerminalBlock>();var Q=GridTerminalSystem.GetBlockGroupWithName(
-ERS_LIGHTS_GROUP_NAME);if(Q==null){return;}Q.GetBlocks(P,K=>K.CubeGrid==Me.CubeGrid);foreach(var L in P){var M=(IMyLightingBlock)L;M.Radius=
-0.1f;M.Intensity=4f;M.BlinkLength=0f;M.BlinkIntervalSeconds=0f;ø.Add(M);}}void u(){if(string.IsNullOrWhiteSpace(Me.
-CustomData)){c(Ø.Ù);return;}var v=Me.CustomData.Split(';');if(v.Length<3){c(Ø.Ù);return;}var w=Convert.ToChar(v[0]);var x=(float)
-Convert.ToDouble(v[1]);var y=(float)Convert.ToDouble(v[2]);switch(w){case'U':c(Ø.Ù);break;case'S':c(Ø.Ú);break;case'M':c(Ø.Û);
-break;case'H':c(Ø.Ü);break;default:c(Ø.Ù);break;}þ=x;ã=y;}void z(){var ª=new List<IMyRadioAntenna>();GridTerminalSystem.
+ERS_LIGHTS_GROUP_NAME);if(Q==null){return;}Q.GetBlocks(P,K=>K.CubeGrid==Me.CubeGrid);foreach(var L in P){var M=(IMyLightingBlock)L;M.
+Intensity=4f;M.BlinkLength=0.5f;M.BlinkIntervalSeconds=0.5f;ø.Add(M);}}void u(){if(string.IsNullOrWhiteSpace(Me.CustomData)){c(Ø.
+Ù);return;}var v=Me.CustomData.Split(';');if(v.Length<3){c(Ø.Ù);return;}var w=Convert.ToChar(v[0]);var x=(float)Convert.
+ToDouble(v[1]);var y=(float)Convert.ToDouble(v[2]);switch(w){case'U':c(Ø.Ù);break;case'S':c(Ø.Ú);break;case'M':c(Ø.Û);break;case
+'H':c(Ø.Ü);break;default:c(Ø.Ù);break;}þ=x;ã=y;}void z(){var ª=new List<IMyRadioAntenna>();GridTerminalSystem.
 GetBlocksOfType(ª);var µ=ª.FirstOrDefault();if(µ==null){return;}µ.Radius=5000;µ.EnableBroadcasting=true;µ.HudText=
 $"{DRIVER_NUMBER}-{DRIVER_NAME}";}void º(){IGC.RegisterBroadcastListener("Address");var À=new List<IMyBroadcastListener>();IGC.GetBroadcastListeners(À);
 Ā=À.FirstOrDefault();}void Á(string Â){if(Â.Equals("LMT",StringComparison.InvariantCultureIgnoreCase)){ñ=!ñ;return;}if(Â.
