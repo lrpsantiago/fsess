@@ -10,7 +10,7 @@ private const bool AUTO_ERS = false; //Activates ERS whenever it's 100% Charge (
 
 enum Ø{Ù,Ú,Û,Ü}enum Ý{Þ,ß,á,Ö}class Å{public int Í{get;set;}public int Æ{get;set;}public int Ç{get;set;}public string È{
 get;set;}="--:--.---";public string É{get;set;}="--:--.---";public Ý Ê{get;set;}public void Ë(string Ì){try{var v=Ì.Split(
-';');Æ=Convert.ToInt32(v[0]);Í=Convert.ToInt32(v[1]);È=v[2];É=v[3];}catch(Exception){}}}string Õ="7.0.0 Beta 4";const int Î
+';');Æ=Convert.ToInt32(v[0]);Í=Convert.ToInt32(v[1]);È=v[2];É=v[3];}catch(Exception){}}}string Õ="7.0.0 Beta 5";const int Î
 =3000;const int Ï=500;const float Ð=80f;const char Ñ='\u2191';const char Ò='\u2193';const char Ó='\u2588';const char Ô=
 '\u2592';const char à='\u2591';List<IMyMotorSuspension>â;IMyCockpit ă;List<IMyTextSurface>ð;bool ñ;bool ò;bool ó;StringBuilder ô
 ;Å õ;List<IMyTerminalBlock>ö;List<IMyLightingBlock>ø;List<IMyLightingBlock>ù;Ø ú;float û=0;float ü=100;float ý=1;float þ=
@@ -46,11 +46,11 @@ IMyTextPanel){var N=(IMyTextPanel)L;N.ContentType=ContentType.TEXT_AND_IMAGE;N.W
 IMyLightingBlock>();var P=new List<IMyTerminalBlock>();var Q=GridTerminalSystem.GetBlockGroupWithName(DRS_LIGHTS_GROUP_NAME);if(Q==null)
 {return;}Q.GetBlocks(P,K=>K.CubeGrid==Me.CubeGrid);foreach(var L in P){var M=(IMyLightingBlock)L;ù.Add(M);}}void t(){ø=
 new List<IMyLightingBlock>();var P=new List<IMyTerminalBlock>();var Q=GridTerminalSystem.GetBlockGroupWithName(
-ERS_LIGHTS_GROUP_NAME);if(Q==null){return;}Q.GetBlocks(P,K=>K.CubeGrid==Me.CubeGrid);foreach(var L in P){var M=(IMyLightingBlock)L;M.
-Intensity=4f;M.BlinkLength=0.5f;M.BlinkIntervalSeconds=0.5f;ø.Add(M);}}void u(){if(string.IsNullOrWhiteSpace(Me.CustomData)){c(Ø.
-Ù);return;}var v=Me.CustomData.Split(';');if(v.Length<3){c(Ø.Ù);return;}var w=Convert.ToChar(v[0]);var x=(float)Convert.
-ToDouble(v[1]);var y=(float)Convert.ToDouble(v[2]);switch(w){case'U':c(Ø.Ù);break;case'S':c(Ø.Ú);break;case'M':c(Ø.Û);break;case
-'H':c(Ø.Ü);break;default:c(Ø.Ù);break;}þ=x;ã=y;}void z(){var ª=new List<IMyRadioAntenna>();GridTerminalSystem.
+ERS_LIGHTS_GROUP_NAME);if(Q==null){return;}Q.GetBlocks(P,K=>K.CubeGrid==Me.CubeGrid);foreach(var L in P){var M=(IMyLightingBlock)L;M.Radius=
+4f;M.Intensity=10f;M.BlinkLength=50f;M.BlinkIntervalSeconds=0.5f;ø.Add(M);}}void u(){if(string.IsNullOrWhiteSpace(Me.
+CustomData)){c(Ø.Ù);return;}var v=Me.CustomData.Split(';');if(v.Length<3){c(Ø.Ù);return;}var w=Convert.ToChar(v[0]);var x=(float)
+Convert.ToDouble(v[1]);var y=(float)Convert.ToDouble(v[2]);switch(w){case'U':c(Ø.Ù);break;case'S':c(Ø.Ú);break;case'M':c(Ø.Û);
+break;case'H':c(Ø.Ü);break;default:c(Ø.Ù);break;}þ=x;ã=y;}void z(){var ª=new List<IMyRadioAntenna>();GridTerminalSystem.
 GetBlocksOfType(ª);var µ=ª.FirstOrDefault();if(µ==null){return;}µ.Radius=5000;µ.EnableBroadcasting=true;µ.HudText=
 $"{DRIVER_NUMBER}-{DRIVER_NAME}";}void º(){IGC.RegisterBroadcastListener("Address");var À=new List<IMyBroadcastListener>();IGC.GetBroadcastListeners(À);
 Ā=À.FirstOrDefault();}void Á(string Â){if(Â.Equals("LMT",StringComparison.InvariantCultureIgnoreCase)){ñ=!ñ;return;}if(Â.
