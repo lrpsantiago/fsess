@@ -1,6 +1,6 @@
 # FSESS - Formula Space Engineers Standard Script
 
-### Version 7.0.0 Beta 5
+### Version 7.0.0 Beta 6
 
 This is the standard script that all cars racing on FSE should be using on Season 7 and it features:
 - Pit Limiter
@@ -39,11 +39,12 @@ Here's a list of all arguments supported by the current script:
 - SOFT    => Switch to Soft Tires
 - MEDIUM  => Switch to Medium Tires
 - HARD    => Switch to Hard Tires
+- EXTRA   => Switch to Extra-Hard Tires
 
 ## Tire Degradation
 Season 6 is going to feature tire degradation, wheels are going to get less friction overtime, affecting the overall performance of your car. You're going to be able to see the Tire Wear % on your onboard screen, once it reachs 0% a random wheels is going to pop-off your car as a puncture.
 
-In order to change wheels, you have to go to the pits, with the Pit Limiter active, fully stop your car, then you are going to be able to switch tires using the arguments: ULTRA, SOFT, MEDIUM, HARD. Notice that once you change tires, the Tire Wear % changes to 100%, also a letter going to be displayed reprsenting the selected compound (U, S, M, H) and your Brakelight is going to change the color making your current compound visible to the others. The image bellow show the specs for each compound type:
+In order to change wheels, you have to go to the pits, with the Pit Limiter active, fully stop your car, then you are going to be able to switch tires using the arguments: ULTRA, SOFT, MEDIUM, HARD, EXTRA. Notice that once you change tires, the Tire Wear % changes to 100%, also a letter going to be displayed reprsenting the selected compound (U, S, M, H, X) and your Brakelight is going to change the color making your current compound visible to the others. The image bellow show the specs for each compound type:
 
 ![alt text](https://i.imgur.com/Csqdrym.png)
 
