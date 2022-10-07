@@ -1,6 +1,6 @@
 # FSESS - Formula Space Engineers Standard Script
 
-### Version 7.0.0 Beta 6
+### Version 7.0.0 Beta 7
 
 This is the standard script that all cars racing on FSE should be using on Season 7 and it features:
 - Pit Limiter
@@ -42,11 +42,11 @@ Here's a list of all arguments supported by the current script:
 - EXTRA   => Switch to Extra-Hard Tires
 
 ## Tire Degradation
-Season 6 is going to feature tire degradation, wheels are going to get less friction overtime, affecting the overall performance of your car. You're going to be able to see the Tire Wear % on your onboard screen, once it reachs 0% a random wheels is going to pop-off your car as a puncture.
+Wheels are going to get less friction overtime, affecting the overall performance of your car. You're going to be able to see the Tire Wear % on your onboard screen, once it reachs 0% a random wheels is going to pop-off your car as a puncture.
 
 In order to change wheels, you have to go to the pits, with the Pit Limiter active, fully stop your car, then you are going to be able to switch tires using the arguments: ULTRA, SOFT, MEDIUM, HARD, EXTRA. Notice that once you change tires, the Tire Wear % changes to 100%, also a letter going to be displayed reprsenting the selected compound (U, S, M, H, X) and your Brakelight is going to change the color making your current compound visible to the others. The image bellow show the specs for each compound type:
 
-![alt text](https://i.imgur.com/ynkEo12.png)
+![alt text](https://i.imgur.com/UlOmMyP.png)
 
 **Note: For now, the drive style won't matter too much on the tire degradation rate, it will be pretty similar to everyone. The degradation rate is only based on current speed (even if the wheels are not touching the ground), the faster you go, the faster your tire will degradate. (At 90m/s it reachs the maximum rate)**
 
@@ -64,4 +64,4 @@ In order to change wheels, you have to go to the pits, with the Pit Limiter acti
   - No, unless you turn off your Programable Block (which would be cheating during a race). There is a discussion about preventing tire degradation when Pit Limiter is active, but for now, make sure to change your tires before it's too late.
 
 - **Why these values for the tires?**
-  - Well, the lifespans are based on the Fibonacci sequence, notice that if you sum the lifespan of ULTRA + SOFT = MEDIUM, also SOFT + MEDIUM = HARD, this allow a good variety of strategies on the races. Also, the friction ranges are planned in a way so all the compounds have 20% of the lifespan bellow 50% friction, so people can optionally push the wheels to the limit even if they are getting a low performance. Your onboard display gonna show a "Tires Worn" warning when it reachs 20%, you can use that as a sign to go to the pits.
+  - Well, the lifespans are based on the Fibonacci sequence, notice that if you sum the lifespan of ULTRA + SOFT = MEDIUM, also SOFT + MEDIUM = HARD, this allow a good variety of strategies on the races. Also, the friction ranges are planned in a way so all the compounds have 20% of the lifespan bellow 50% friction, so people can optionally push the wheels to the limit even if they are getting a low performance.
