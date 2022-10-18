@@ -1,6 +1,6 @@
 # FSESS - Formula Space Engineers Standard Script
 
-### Version 7.0.0 Beta 7
+### Version 7.0.0
 
 This is the standard script that all cars racing on FSE should be using on Season 7 and it features:
 - Pit Limiter
@@ -22,7 +22,7 @@ This is the standard script that all cars racing on FSE should be using on Seaso
    - DEFAULT_SUSPENSION_POWER => Set the power percentage you use on your car suspensions, remember to put an "f" at the end of the number;
    - DEFAULT_SUSPENSION_SPEED_LIMIT => Set the top speed you use on your car suspensions, remember to put an "f" at the end of the number;
 7. If you want to see onboard race information (Current Lap, Position, Lap Time, Tire Wear), you must have an Antenna on your car. 
-8. Once you have set the values, click on "Check Code" button, a success message should pop-up (if not,repeat the previous steps);
+8. Once you have set the values, click on "Check Code" button, a success message should pop-up (if not, repeat the previous steps);
 9. After closing the pop-up, click on "OK" on the Editor;
 10. Setup the arguments to the Programmable Block on your car's hotbar, so you can execute commands for your cockpit, then you're ready to race.
 
