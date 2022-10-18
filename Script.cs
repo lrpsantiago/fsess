@@ -7,70 +7,74 @@ private const string BRAKELIGHT_GROUP_NAME = "Brakelight";
 private const string DRS_LIGHTS_GROUP_NAME = "DRS Lights";
 private const string ERS_LIGHTS_GROUP_NAME = "ERS Lights";
 private const bool AUTO_ERS = false; //Activates ERS whenever it's 100% Charge (true or false)
+private readonly int? COCKPIT_DISPLAY_INDEX = null; //If you wanna use a cockpit display to show dashboard info (0, 1, 2, 3 or null);
 
-enum ç{ß,à,á,â,ã,}enum ä{å,æ,è,Þ}class Ý{public int Ñ{get;set;}public int É{get;set;}public int Ê{get;set;}public int Ë{
-get;set;}public string Ì{get;set;}="--:--.---";public string Í{get;set;}="--:--.---";public ä Î{get;set;}=ä.å;public void Ï
-(string Ð){try{var x=Ð.Split(';');Ê=Convert.ToInt32(x[0]);Ñ=Convert.ToInt32(x[1]);Ì=x[2];Í=x[3];É=Convert.ToInt32(x[4]);Ë
-=Convert.ToInt32(x[5]);Î=(ä)Convert.ToInt32(x[6]);}catch(Exception){}}}string Û="7.0.0 Beta 7";const int Ò=3000;const int
-Ó=500;const float Ô=80f;const char Õ='\u2191';const char Ö='\u2193';const char Ø='\u2588';const char Ù='\u2592';const
-char Ú='\u2591';List<IMyMotorSuspension>È;IMyCockpit Ü;List<IMyTextSurface>é;bool ù;bool ú;bool û;StringBuilder ü;Ý ý;List<
-IMyTerminalBlock>þ;List<IMyLightingBlock>ÿ;List<IMyLightingBlock>Ā;ç ā;float Ă=0;float ă=100;float Ą=1;float ą=100;long Ć=-1;
-IMyBroadcastListener ć;int Ĉ;int ĉ;DateTime Ċ;float ċ;float Č=1f;Program(){ý=new Ý();B();C();E();G();K();f();O();Æ();w();Á();Runtime.
-UpdateFrequency=UpdateFrequency.Update10;Ċ=DateTime.Now;}void Save(){}void Main(string Ä,UpdateType ê){var ë=DateTime.Now;ċ=(float)(ë-Ċ
-).TotalMilliseconds/1000;Echo($"Running FSESS {Û}");Ã(Ä);U();X();R();Z();ï();ì();ò();Ċ=ë;}void ì(){switch(ý.Î){case ä.æ:í
-();break;case ä.è:î();break;default:break;}}void í(){ú=false;û=false;ù=false;foreach(var F in È){F.SetValueFloat(
-"Speed Limit",50f*3.6f);}}void î(){ú=false;û=false;ù=false;foreach(var F in È){F.IsParkingEnabled=true;}}void ï(){var ð=IGC.
-UnicastListener;if(!ð.HasPendingMessage){Ĉ-=(int)(ċ*1000);if(ć.HasPendingMessage&&Ĉ<=0){var ø=ć.AcceptMessage();if(ø.Tag=="Address"){Ć=
-Convert.ToInt64(ø.Data.ToString());IGC.SendUnicastMessage(Ć,"Register",$"{Me.CubeGrid.CustomName};{IGC.Me}");}}return;}while(ð.
-HasPendingMessage){var ñ=ð.AcceptMessage();if(ñ.Tag=="RaceData"){ý.Ï(ñ.Data.ToString());}if(ñ.Tag=="Argument"){Ã(ñ.Data.ToString());}}Ĉ=Ò
-;}void ò(){ü.Clear();var T=Ü.GetShipSpeed();var ó=((ą-Ă)/(ă-Ă))*100f;var ô=m();var õ=((int)Math.Floor(ó)).ToString();var
-ö=$"{T:F0}m/s";var u=q();var ø=ù?"PIT LIMITER":ú?"DRS ON":"";ü.AppendLine(ö+u.PadLeft(16-ö.Length));ü.AppendLine(ø);ü.
-AppendLine($"P:{ý.Ñ:00}/{ý.É:00}  L:{(ý.Ê):00}/{ý.Ë:00}");ü.AppendLine($"TYRE ({ô})..: {õ,3}%");ü.AppendLine($"TIME.: {ý.Ì}");ü.
-AppendLine($"BEST.: {ý.Í}");if(Ĉ<=0){ü.AppendLine($"NO CONNECTION");}foreach(var I in é){I.WriteText(ü);var S=ý.Î!=ä.å?p():Color.
-Black;I.BackgroundColor=S;I.ScriptBackgroundColor=S;}}void R(){if(!ù){foreach(var F in È){F.Power=Ô;F.SetValueFloat(
-"Speed Limit",DEFAULT_SUSPENSION_SPEED_LIMIT*3.6f);}return;}foreach(var F in È){F.Power=20f;F.SetValueFloat("Speed Limit",26f*3.6f);}
-var T=Ü.GetShipSpeed();Ü.HandBrake=T>24;}void U(){var V=Ü.MoveIndicator.Z>0||Ü.MoveIndicator.Y>0||Ü.HandBrake;if(V){ú=false
-;}for(int W=0;W<È.Count;W++){var F=È[W];F.Strength=!ú?DEFAULT_SUSPENSION_STRENGTH:100;}foreach(var A in Ā){A.Enabled=ú;}}
-void X(){if(AUTO_ERS&&Č==1){û=true;}if(ù){û=false;}var c=Ü.MoveIndicator.Z<0;var T=Ü.GetShipSpeed();if(T>1){if(!û){var Y=(
-float)MathHelper.Clamp(T/100,0,1);Č+=(1f/240)*Y*ċ;}else if(c){var Y=(float)MathHelper.Clamp(T/100,1,0);Č-=(1f/120)*Y*ċ;}}Č=
-MathHelper.Clamp(Č,0,1);if(Č<=0){û=false;}foreach(var F in È){F.Power=!û?Ô:100;}foreach(var A in ÿ){A.Color=û?Color.Lime:Color.Red
-;}}void Z(){var T=Ü.GetShipSpeed();if(T<1){return;}var a=(float)MathHelper.Clamp(T,0,90)/90;var e=Ą*a*ċ;ą-=e;ą=MathHelper
-.Clamp(ą,Ă,ă);foreach(var F in È){F.Friction=ą;}if(ą<=Ă){if(È.All(F=>F.IsAttached)){var J=new Random().Next(4);È[J].
-Detach();}}h();}void B(){if(DRIVER_NUMBER<=0&&DRIVER_NUMBER>99){throw new Exception("DRIVER_NUMBER should be between 1 and 99"
-);}Me.CubeGrid.CustomName=$"{DRIVER_NUMBER}-{DRIVER_NAME.Trim()}";}void C(){var D=new List<IMyCockpit>();
-GridTerminalSystem.GetBlocksOfType(D);Ü=D.FirstOrDefault();if(Ü==null){throw new Exception("No cockpit!");}}void E(){È=new List<
-IMyMotorSuspension>();GridTerminalSystem.GetBlocksOfType(È,F=>F.CubeGrid==Me.CubeGrid);if(È==null||È.Count!=4){throw new Exception(
-"Need 4 suspensions!");}}void G(){ü=new StringBuilder();é=new List<IMyTextSurface>{Me.GetSurface(0)};var H=(IMyTextSurface)GridTerminalSystem
-.GetBlockWithName(DISPLAY_NAME);if(H!=null){é.Add(H);}foreach(var I in é){I.ContentType=ContentType.TEXT_AND_IMAGE;I.
-Alignment=TextAlignment.CENTER;I.Font="Monospace";}}void K(){var P=new List<IMyTerminalBlock>();GridTerminalSystem.
-GetBlockGroupWithName(BRAKELIGHT_GROUP_NAME).GetBlocks(P,L=>L.CubeGrid==Me.CubeGrid);þ=new List<IMyTerminalBlock>();foreach(var A in P){if(A
-is IMyLightingBlock){var M=(IMyLightingBlock)A;M.Intensity=5f;M.BlinkLength=0f;M.BlinkIntervalSeconds=0f;}else if(A is
-IMyTextPanel){var N=(IMyTextPanel)A;N.ContentType=ContentType.TEXT_AND_IMAGE;N.WriteText("",false);}þ.Add(A);}}void O(){Ā=new List<
-IMyLightingBlock>();var P=new List<IMyTerminalBlock>();var Q=GridTerminalSystem.GetBlockGroupWithName(DRS_LIGHTS_GROUP_NAME);if(Q==null)
-{return;}Q.GetBlocks(P,L=>L.CubeGrid==Me.CubeGrid);foreach(var A in P){var M=(IMyLightingBlock)A;Ā.Add(M);}}void f(){ÿ=
-new List<IMyLightingBlock>();var P=new List<IMyTerminalBlock>();var Q=GridTerminalSystem.GetBlockGroupWithName(
-ERS_LIGHTS_GROUP_NAME);if(Q==null){return;}Q.GetBlocks(P,L=>L.CubeGrid==Me.CubeGrid);foreach(var A in P){var M=(IMyLightingBlock)A;M.Radius=
-4f;M.Intensity=10f;M.BlinkLength=50f;M.BlinkIntervalSeconds=0.5f;ÿ.Add(M);}}void w(){if(string.IsNullOrWhiteSpace(Me.
-CustomData)){Ç(ç.ß);return;}var x=Me.CustomData.Split(';');if(x.Length<3){Ç(ç.ß);return;}var y=Convert.ToChar(x[0]);var z=(float)
-Convert.ToDouble(x[1]);var µ=(float)Convert.ToDouble(x[2]);switch(y){case'U':Ç(ç.ß);break;case'S':Ç(ç.à);break;case'M':Ç(ç.á);
-break;case'H':Ç(ç.â);break;case'X':Ç(ç.ã);break;default:Ç(ç.ß);break;}ą=z;Č=µ;}void Æ(){var º=new List<IMyRadioAntenna>();
-GridTerminalSystem.GetBlocksOfType(º);var À=º.FirstOrDefault();if(À==null){return;}À.Enabled=true;À.Radius=5000;À.EnableBroadcasting=true;
-À.HudText=$"{DRIVER_NUMBER}-{DRIVER_NAME}";}void Á(){IGC.RegisterBroadcastListener("Address");var Â=new List<
-IMyBroadcastListener>();IGC.GetBroadcastListeners(Â);ć=Â.FirstOrDefault();}void Ã(string Ä){if(Ä.Equals("LMT",StringComparison.
-InvariantCultureIgnoreCase)){ù=!ù;return;}if(Ä.Equals("LMT_ON",StringComparison.InvariantCultureIgnoreCase)){ù=true;return;}if(Ä.Equals("LMT_OFF",
-StringComparison.InvariantCultureIgnoreCase)){ù=false;return;}if(Ä.Equals("DRS",StringComparison.InvariantCultureIgnoreCase)){ú=!ú;
-return;}if(Ä.Equals("ERS",StringComparison.InvariantCultureIgnoreCase)){û=!û;return;}if(Ä.Equals("ULTRA",StringComparison.
-InvariantCultureIgnoreCase)){Å(ç.ß);return;}if(Ä.Equals("SOFT",StringComparison.InvariantCultureIgnoreCase)){Å(ç.à);return;}if(Ä.Equals("MEDIUM",
-StringComparison.InvariantCultureIgnoreCase)){Å(ç.á);return;}if(Ä.Equals("HARD",StringComparison.InvariantCultureIgnoreCase)){Å(ç.â);
-return;}if(Ä.Equals("EXTRA",StringComparison.InvariantCultureIgnoreCase)){Å(ç.ã);return;}}void Å(ç ª){if(!ù||Ü.GetShipSpeed()>
-1){return;}Ç(ª);h(true);}void Ç(ç ª){var v=Color.White;switch(ª){case ç.ß:ă=100;Ă=37.5f;Ą=(ă-Ă)/(60*5);v=Color.Magenta;
-break;case ç.à:ă=90;Ă=40;Ą=(ă-Ă)/(60*8);v=Color.Red;break;case ç.á:ă=75;Ă=43.75f;Ą=(ă-Ă)/(60*13);v=Color.Yellow;break;case ç.
-â:ă=60;Ă=47.5f;Ą=(ă-Ă)/(60*21);v=Color.White;break;case ç.ã:ă=55;Ă=48.75f;Ą=(ă-Ă)/(60*34);v=Color.Cyan;break;default:
-break;}ą=ă;ā=ª;g(v);foreach(var F in È){F.ApplyAction("Add Top Part");}}void g(Color S){foreach(var A in þ){if(A is
-IMyLightingBlock){var M=(IMyLightingBlock)A;M.Color=S;}else if(A is IMyTextPanel){var N=(IMyTextPanel)A;N.BackgroundColor=S;}}}void h(
-bool j=false){ĉ-=(int)(ċ*1000);if(!j&&ĉ>0){return;}var k=m();Me.CustomData=$"{k};{ą};{Č}";ĉ=Ó;}char m(){var k='U';switch(ā){
-case ç.ß:k='U';break;case ç.à:k='S';break;case ç.á:k='M';break;case ç.â:k='H';break;case ç.ã:k='X';break;}return k;}string n
-(){var o=string.Empty;switch(ý.Î){case ä.Þ:o="Blue";break;case ä.å:o="Green";break;case ä.è:o="Red";break;case ä.æ:o=
-"Yellow";break;}return o;}Color p(){var S=Color.Black;switch(ý.Î){case ä.Þ:S=Color.Blue;break;case ä.å:S=Color.Green;break;case
-ä.è:S=Color.Red;break;case ä.æ:S=Color.Yellow;break;}return S;}string q(){const int r=6;var t=û?Ö:Č<1?Õ:'-';var u=t+"E:";
-for(int W=0;W<r;W++){var Y=1f/r;if(Č>Y*W){if(Č<Y*(W+1)){u+=Ù;continue;}u+=Ø;}else{u+=Ú;}}return u;}
+enum á{â,ã,ä,å,æ}enum ç{è,é,ë,ê}class à{public int ß{get;set;}public int Ì{get;set;}public int Í{get;set;}public int Î{
+get;set;}public string Ï{get;set;}="--:--.---";public string Ð{get;set;}="--:--.---";public ç Ñ{get;set;}=ç.è;public void Ò
+(string Ó){try{var y=Ó.Split(';');Í=Convert.ToInt32(y[0]);ß=Convert.ToInt32(y[1]);Ï=y[2];Ð=y[3];Ì=Convert.ToInt32(y[4]);Î
+=Convert.ToInt32(y[5]);Ñ=(ç)Convert.ToInt32(y[6]);}catch(Exception){}}}string Ô="7.0.0";const int Õ=3000;const int Ö=500;
+const float Ø=80f;const char Ù='\u2191';const char Ú='\u2193';const char Û='\u2588';const char Ü='\u2592';const char Ý=
+'\u2591';List<IMyMotorSuspension>Þ;IMyCockpit Ë;List<IMyTextSurface>ì;IMyRadioAntenna í;bool þ;bool ÿ;bool Ā;StringBuilder ā;à Ă
+;List<IMyTerminalBlock>ă;List<IMyLightingBlock>Ą;List<IMyLightingBlock>ą;á Ć;float ć=0;float Ĉ=100;float ĉ=1;float Ċ=100;
+long ċ=-1;IMyBroadcastListener Č;int č;int Ď;DateTime ď;float Đ;float đ=1f;Color Ē;Program(){Ă=new à();A();I();C();E();H();Q
+();N();º();x();Â();Runtime.UpdateFrequency=UpdateFrequency.Update10;ď=DateTime.Now;}void Save(){}void Main(string Å,
+UpdateType î){var ï=DateTime.Now;Đ=(float)(ï-ď).TotalMilliseconds/1000;Echo($"Running FSESS {Ô}");Ä(Å);T();W();Ê();Z();ò();ö();R()
+;ď=ï;}void ð(){ÿ=false;Ā=false;f(50f);}void ñ(){ÿ=false;Ā=false;Ë.HandBrake=true;}void ò(){var ó=IGC.UnicastListener;if(!
+ó.HasPendingMessage){č-=(int)(Đ*1000);if(Č.HasPendingMessage&&č<=0){var ô=Č.AcceptMessage();if(ô.Tag=="Address"){ċ=
+Convert.ToInt64(ô.Data.ToString());IGC.SendUnicastMessage(ċ,"Register",$"{Me.CubeGrid.CustomName};{IGC.Me}");}}return;}while(ó.
+HasPendingMessage){var õ=ó.AcceptMessage();if(õ.Tag=="RaceData"){Ă.Ò(õ.Data.ToString());}if(õ.Tag=="Argument"){Ä(õ.Data.ToString());}}č=Õ
+;}void ö(){ā.Clear();var S=Ë.GetShipSpeed();var ø=((Ċ-ć)/(Ĉ-ć))*100f;var ù=m();var ú=((int)Math.Floor(ø)).ToString();var
+û=$"{S:F0}m/s";var v=r();var ô=þ?"PIT LIMITER":ÿ?"DRS ON":"";ā.AppendLine(û+v.PadLeft(16-û.Length));ā.AppendLine(ô);ā.
+AppendLine($"P:{Ă.ß:00}/{Ă.Ì:00}  L:{(Ă.Í):00}/{Ă.Î:00}");ā.AppendLine($"TYRE ({ù})..: {ú,3}%");ā.AppendLine($"TIME.: {Ă.Ï}");ā.
+AppendLine($"BEST.: {Ă.Ð}");if(č<=0){ā.AppendLine($"NO CONNECTION");}foreach(var G in ì){G.WriteText(ā);var ü=Color.Black;var ý=Ē;
+switch(Ă.Ñ){case ç.é:ü=Color.Yellow;ý=Color.Black;break;case ç.ë:ü=Color.Red;ý=Color.White;break;case ç.ê:ü=Color.Blue;ý=Color
+.White;break;}G.BackgroundColor=ü;G.ScriptBackgroundColor=ü;G.FontColor=ý;}}void Ê(){if(!þ){foreach(var D in Þ){D.Power=Ø
+;D.SetValueFloat("Speed Limit",DEFAULT_SUSPENSION_SPEED_LIMIT*3.6f);}return;}foreach(var D in Þ){D.Power=20f;D.
+SetValueFloat("Speed Limit",26f*3.6f);}var S=Ë.GetShipSpeed();Ë.HandBrake=S>24;}void T(){var U=Ë.MoveIndicator.Z>0||Ë.MoveIndicator.Y
+>0||Ë.HandBrake;if(U){ÿ=false;}for(int V=0;V<Þ.Count;V++){var D=Þ[V];D.Strength=!ÿ?DEFAULT_SUSPENSION_STRENGTH:100;}
+foreach(var K in ą){K.Color=ÿ?Color.Blue:Color.Black;K.Enabled=ÿ;}}void W(){if(AUTO_ERS&&đ==1){Ā=true;}if(þ){Ā=false;}var X=Ë.
+MoveIndicator.Z<0;var S=Ë.GetShipSpeed();if(S>1){if(!Ā){var Y=(float)MathHelper.Clamp(S/100,0,1);đ+=(1f/240)*Y*Đ;}else if(X){var Y=(
+float)MathHelper.Clamp(S/100,1,0);đ-=(1f/120)*Y*Đ;}}đ=MathHelper.Clamp(đ,0,1);if(đ<=0){Ā=false;}foreach(var D in Þ){D.Power=!
+Ā?Ø:100;}foreach(var K in Ą){K.Color=Ā?Color.Lime:Color.Red;}}void Z(){var S=Ë.GetShipSpeed();if(S<1){return;}var a=(
+float)MathHelper.Clamp(S,0,90)/90;var c=ĉ*a*Đ;Ċ-=c;Ċ=MathHelper.Clamp(Ċ,ć,Ĉ);foreach(var D in Þ){D.Friction=Ċ;}if(Ċ<=ć){if(Þ.
+All(D=>D.IsAttached)){var e=new Random().Next(4);Þ[e].Detach();}}h();}void R(){if(í==null){return;}í.HudText=
+$"(P{Ă.ß}) {DRIVER_NAME}-{DRIVER_NUMBER}";}void A(){if(DRIVER_NUMBER<=0&&DRIVER_NUMBER>99){throw new Exception("DRIVER_NUMBER should be between 1 and 99");}Me.
+CubeGrid.CustomName=$"{DRIVER_NUMBER}-{DRIVER_NAME.Trim()}";}void I(){var B=new List<IMyCockpit>();GridTerminalSystem.
+GetBlocksOfType(B);Ë=B.FirstOrDefault();if(Ë==null){throw new Exception("No cockpit!");}}void C(){Þ=new List<IMyMotorSuspension>();
+GridTerminalSystem.GetBlocksOfType(Þ,D=>D.CubeGrid==Me.CubeGrid);if(Þ==null||Þ.Count!=4){throw new Exception("Need 4 suspensions!");}}void
+E(){ā=new StringBuilder();ì=new List<IMyTextSurface>{Me.GetSurface(0)};var F=(IMyTextSurface)GridTerminalSystem.
+GetBlockWithName(DISPLAY_NAME);if(F!=null){ì.Add(F);}if(COCKPIT_DISPLAY_INDEX.HasValue){var G=Ë.GetSurface(COCKPIT_DISPLAY_INDEX.
+GetValueOrDefault());if(G!=null){ì.Add(G);}}foreach(var G in ì){G.ContentType=ContentType.TEXT_AND_IMAGE;G.Alignment=TextAlignment.CENTER
+;G.Font="Monospace";}Ē=Me.GetSurface(0).FontColor;}void H(){var J=new List<IMyTerminalBlock>();GridTerminalSystem.
+GetBlockGroupWithName(BRAKELIGHT_GROUP_NAME).GetBlocks(J,P=>P.CubeGrid==Me.CubeGrid);ă=new List<IMyTerminalBlock>();foreach(var K in J){if(K
+is IMyLightingBlock){var L=(IMyLightingBlock)K;L.Intensity=5f;L.BlinkLength=0f;L.BlinkIntervalSeconds=0f;}else if(K is
+IMyTextPanel){var M=(IMyTextPanel)K;M.ContentType=ContentType.TEXT_AND_IMAGE;M.WriteText("",false);}ă.Add(K);}}void N(){ą=new List<
+IMyLightingBlock>();var J=new List<IMyTerminalBlock>();var O=GridTerminalSystem.GetBlockGroupWithName(DRS_LIGHTS_GROUP_NAME);if(O==null)
+{return;}O.GetBlocks(J,P=>P.CubeGrid==Me.CubeGrid);foreach(var K in J){var L=(IMyLightingBlock)K;ą.Add(L);}}void Q(){Ą=
+new List<IMyLightingBlock>();var J=new List<IMyTerminalBlock>();var O=GridTerminalSystem.GetBlockGroupWithName(
+ERS_LIGHTS_GROUP_NAME);if(O==null){return;}O.GetBlocks(J,P=>P.CubeGrid==Me.CubeGrid);foreach(var K in J){var L=(IMyLightingBlock)K;L.Radius=
+4f;L.Intensity=10f;L.BlinkLength=50f;L.BlinkIntervalSeconds=0.5f;Ą.Add(L);}}void x(){if(string.IsNullOrWhiteSpace(Me.
+CustomData)){È(á.â);return;}var y=Me.CustomData.Split(';');if(y.Length<3){È(á.â);return;}var z=Convert.ToChar(y[0]);var ª=(float)
+Convert.ToDouble(y[1]);var µ=(float)Convert.ToDouble(y[2]);switch(z){case'U':È(á.â);break;case'S':È(á.ã);break;case'M':È(á.ä);
+break;case'H':È(á.å);break;case'X':È(á.æ);break;default:È(á.â);break;}Ċ=ª;đ=µ;}void º(){var À=new List<IMyRadioAntenna>();
+GridTerminalSystem.GetBlocksOfType(À);var Á=À.FirstOrDefault();if(Á==null){return;}Á.Enabled=true;Á.Radius=5000;Á.EnableBroadcasting=true;
+Á.HudText=$"(P{Ă.ß}) {DRIVER_NAME}-{DRIVER_NUMBER}";í=Á;}void Â(){IGC.RegisterBroadcastListener("Address");var Ã=new List
+<IMyBroadcastListener>();IGC.GetBroadcastListeners(Ã);Č=Ã.FirstOrDefault();}void Ä(string Å){if(Å.Equals("LMT",
+StringComparison.InvariantCultureIgnoreCase)){þ=!þ;return;}if(Å.Equals("LMT_ON",StringComparison.InvariantCultureIgnoreCase)){þ=true;
+return;}if(Å.Equals("LMT_OFF",StringComparison.InvariantCultureIgnoreCase)){þ=false;return;}if(Å.Equals("DRS",StringComparison
+.InvariantCultureIgnoreCase)){ÿ=!ÿ;return;}if(Å.Equals("ERS",StringComparison.InvariantCultureIgnoreCase)){Ā=!Ā;return;}
+if(Å.Equals("ULTRA",StringComparison.InvariantCultureIgnoreCase)){Æ(á.â);return;}if(Å.Equals("SOFT",StringComparison.
+InvariantCultureIgnoreCase)){Æ(á.ã);return;}if(Å.Equals("MEDIUM",StringComparison.InvariantCultureIgnoreCase)){Æ(á.ä);return;}if(Å.Equals("HARD",
+StringComparison.InvariantCultureIgnoreCase)){Æ(á.å);return;}if(Å.Equals("EXTRA",StringComparison.InvariantCultureIgnoreCase)){Æ(á.æ);
+return;}}void Æ(á Ç){if(!þ||Ë.GetShipSpeed()>1){return;}È(Ç);h(true);}void È(á Ç){var É=Color.White;switch(Ç){case á.â:Ĉ=100;ć
+=37.5f;ĉ=(Ĉ-ć)/(60*5);É=Color.Magenta;break;case á.ã:Ĉ=90;ć=40;ĉ=(Ĉ-ć)/(60*8);É=Color.Red;break;case á.ä:Ĉ=75;ć=43.75f;ĉ=
+(Ĉ-ć)/(60*13);É=Color.Yellow;break;case á.å:Ĉ=60;ć=47.5f;ĉ=(Ĉ-ć)/(60*21);É=Color.White;break;case á.æ:Ĉ=55;ć=48.75f;ĉ=(Ĉ-
+ć)/(60*34);É=Color.Cyan;break;default:break;}Ċ=Ĉ;Ć=Ç;w(É);foreach(var D in Þ){D.ApplyAction("Add Top Part");}}void w(
+Color q){foreach(var K in ă){if(K is IMyLightingBlock){var L=(IMyLightingBlock)K;L.Color=q;}else if(K is IMyTextPanel){var M=
+(IMyTextPanel)K;M.BackgroundColor=q;}}}void f(float g){foreach(var D in Þ){D.SetValueFloat("Speed Limit",g*3.6f);}}void h
+(bool j=false){Ď-=(int)(Đ*1000);if(!j&&Ď>0){return;}var k=m();Me.CustomData=$"{k};{Ċ};{đ}";Ď=Ö;}char m(){var k='U';switch
+(Ć){case á.â:k='U';break;case á.ã:k='S';break;case á.ä:k='M';break;case á.å:k='H';break;case á.æ:k='X';break;}return k;}
+string n(){var o=string.Empty;switch(Ă.Ñ){case ç.ê:o="Blue";break;case ç.è:o="Green";break;case ç.ë:o="Red";break;case ç.é:o=
+"Yellow";break;}return o;}Color p(){var q=Color.Black;switch(Ă.Ñ){case ç.ê:q=Color.Blue;break;case ç.è:q=Color.Green;break;case
+ç.ë:q=Color.Red;break;case ç.é:q=Color.Yellow;break;}return q;}string r(){const int t=6;var u=Ā?Ú:đ<1?Ù:'-';var v=u+"E:";
+for(int V=0;V<t;V++){var Y=1f/t;if(đ>Y*V){if(đ<Y*(V+1)){v+=Ü;continue;}v+=Û;}else{v+=Ý;}}return v;}
