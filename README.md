@@ -1,6 +1,6 @@
 # FSESS - Formula Space Engineers Standard Script
 
-### Version 7.0.0
+### Version 7.1.0
 
 This is the standard script that all cars racing on FSE should be using on Season 7 and it features:
 - Pit Limiter
@@ -8,6 +8,7 @@ This is the standard script that all cars racing on FSE should be using on Seaso
 - Energy Recovery System (ERS)
 - Onboard Race Information
 - Tire Degradation
+- Race Flags Effects
 
 ## How to Setup
 1. Place a Programmable Block on your car;
