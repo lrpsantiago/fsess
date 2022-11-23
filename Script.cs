@@ -19,11 +19,11 @@ List<IMyMotorSuspension>Ì;IMyCockpit á;List<IMyTextSurface>í;IMyRadioAntenna 
 <IMyTerminalBlock>ą;List<IMyLightingBlock>Ć;List<IMyLightingBlock>ć;ã Ĉ;float Ċ=0;float Ĕ=100;float ċ=1;float Č=100;long
 č=-1;IMyBroadcastListener Ď;int ď;int Đ;DateTime đ;float Ē;float ē=1f;Program(){Ą=new à();Q();P();C();E();H();A();N();À()
 ;y();Ê();Runtime.UpdateFrequency=UpdateFrequency.Update1;đ=DateTime.Now;}void Save(){}void Main(string Å,UpdateType î){
-var ï=DateTime.Now;Ē=(float)(ï-đ).TotalMilliseconds/1000;Echo($"Running FSESS {Ö}");Ä(Å);T();W();ĉ();Z();ó();ð();ø();e();đ=
-ï;}void ð(){switch(Ą.Ó){case é.ì:ñ();break;case é.ë:ò();break;default:á.HandBrake=false;g(DEFAULT_SUSPENSION_SPEED_LIMIT)
-;break;}}void ñ(){ā=false;Ă=false;á.HandBrake=á.GetShipSpeed()>50;g(50f);}void ò(){ā=false;Ă=false;á.HandBrake=true;}void
-ó(){var ô=IGC.UnicastListener;if(!ô.HasPendingMessage){ď-=(int)(Ē*1000);if(Ď.HasPendingMessage&&ď<=0){var õ=Ď.
-AcceptMessage();if(õ.Tag=="Address"){č=Convert.ToInt64(õ.Data.ToString());IGC.SendUnicastMessage(č,"Register",
+var ï=DateTime.Now;Ē=(float)(ï-đ).TotalMilliseconds/1000;Echo($"Running FSESS {Ö}");Ä(Å);T();W();ð();ĉ();Z();ó();ø();e();đ=
+ï;}void ð(){switch(Ą.Ó){case é.ì:ñ();break;case é.ë:ò();break;default:if(!Ā){á.HandBrake=false;g(
+DEFAULT_SUSPENSION_SPEED_LIMIT);}break;}}void ñ(){ā=false;Ă=false;á.HandBrake=á.GetShipSpeed()>50;g(50f);}void ò(){ā=false;Ă=false;Ā=false;á.HandBrake
+=true;}void ó(){var ô=IGC.UnicastListener;if(!ô.HasPendingMessage){ď-=(int)(Ē*1000);if(Ď.HasPendingMessage&&ď<=0){var õ=Ď
+.AcceptMessage();if(õ.Tag=="Address"){č=Convert.ToInt64(õ.Data.ToString());IGC.SendUnicastMessage(č,"Register",
 $"{Me.CubeGrid.CustomName};{IGC.Me}");}}return;}while(ô.HasPendingMessage){var ö=ô.AcceptMessage();if(ö.Tag=="RaceData"){Ą.Ô(ö.Data.ToString());}if(ö.Tag==
 "Argument"){Ä(ö.Data.ToString());}}ď=Ø;}void ø(){ă.Clear();var S=á.GetShipSpeed();var ù=((Č-Ċ)/(Ĕ-Ċ))*100f;var ú=n();var û=((int)
 Math.Floor(ù)).ToString();var ü=$"{S:F0}m/s";var w=t();var õ=Ā?"PIT LIMITER":ā?"DRS ON":"";ă.AppendLine(ü+w.PadLeft(16-ü.
