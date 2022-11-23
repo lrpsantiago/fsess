@@ -13,7 +13,7 @@ private readonly Color DEFAULT_FONT_COLOR = new Color(255, 255, 255);   //Font C
 enum ã{ä,å,æ,ç,è}enum é{ê,ì,ë,â}class à{public int Í{get;set;}public int Î{get;set;}public int Ï{get;set;}public int Ð{
 get;set;}public string Ñ{get;set;}="--:--.---";public string Ò{get;set;}="--:--.---";public é Ó{get;set;}public void Ô(
 string Õ){try{var z=Õ.Split(';');Ï=Convert.ToInt32(z[0]);Í=Convert.ToInt32(z[1]);Ñ=z[2];Ò=z[3];Î=Convert.ToInt32(z[4]);Ð=
-Convert.ToInt32(z[5]);Ó=(é)Convert.ToInt32(z[6]);}catch(Exception){}}}string Ö="7.1.0";const int Ø=3000;const int Ù=1000;const
+Convert.ToInt32(z[5]);Ó=(é)Convert.ToInt32(z[6]);}catch(Exception){}}}string Ö="7.1.1";const int Ø=3000;const int Ù=1000;const
 float Ú=80f;const char Û='\u2191';const char Ü='\u2193';const char Ý='\u2588';const char Þ='\u2592';const char ß='\u2591';
 List<IMyMotorSuspension>Ì;IMyCockpit á;List<IMyTextSurface>í;IMyRadioAntenna ÿ;bool Ā;bool ā;bool Ă;StringBuilder ă;à Ą;List
 <IMyTerminalBlock>ą;List<IMyLightingBlock>Ć;List<IMyLightingBlock>ć;ã Ĉ;float Ċ=0;float Ĕ=100;float ċ=1;float Č=100;long
