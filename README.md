@@ -1,6 +1,6 @@
 # FSESS - Formula Space Engineers Standard Script
 
-### Version 7.1.1
+### Version 8.0.0
 
 This is the standard script that all cars racing on FSE should be using on Season 7 and it features:
 - Pit Limiter
@@ -9,6 +9,7 @@ This is the standard script that all cars racing on FSE should be using on Seaso
 - Onboard Race Information
 - Tire Degradation
 - Race Flags Effects
+- Drafting System
 
 ## How to Setup
 1. Place a Programmable Block on your car;
@@ -36,7 +37,6 @@ Here's a list of all arguments supported by the current script:
 - LMT_OFF => Deactivate Pit Limiter
 - DRS     => Toggle Drag Reduction System (DRS)
 - ERS     => Toggle Energy Recovery System (ERS)
-- ULTRA   => Switch to Ultra-Soft Tires
 - SOFT    => Switch to Soft Tires
 - MEDIUM  => Switch to Medium Tires
 - HARD    => Switch to Hard Tires
@@ -45,7 +45,7 @@ Here's a list of all arguments supported by the current script:
 ## Tire Degradation
 Wheels are going to get less friction overtime, affecting the overall performance of your car. You're going to be able to see the Tire Wear % on your onboard screen, once it reachs 0% a random wheels is going to pop-off your car as a puncture.
 
-In order to change wheels, you have to go to the pits, with the Pit Limiter active, fully stop your car, then you are going to be able to switch tires using the arguments: ULTRA, SOFT, MEDIUM, HARD, EXTRA. Notice that once you change tires, the Tire Wear % changes to 100%, also a letter going to be displayed reprsenting the selected compound (U, S, M, H, X) and your Brakelight is going to change the color making your current compound visible to the others. The image bellow show the specs for each compound type:
+In order to change wheels, you have to go to the pits, with the Pit Limiter active, fully stop your car, then you are going to be able to switch tires using the arguments: ULTRA, SOFT, MEDIUM, HARD, EXTRA. Notice that once you change tires, the Tire Wear % changes to 100%, also a letter going to be displayed reprsenting the selected compound (S, M, H, X) and your Brakelight is going to change the color making your current compound visible to the others. The image bellow show the specs for each compound type:
 
 ![alt text](https://i.imgur.com/UlOmMyP.png)
 
