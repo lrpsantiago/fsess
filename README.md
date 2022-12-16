@@ -2,31 +2,31 @@
 
 ### Version 8.0.0
 
-This is the standard script that all cars racing on FSE should be using on Season 7 and it features:
+This is the standard script that all cars racing on FSE should be using on Season 8 and it features:
 - Pit Limiter
 - Drag Reduction System (DRS)
 - Energy Recovery System (ERS)
 - Onboard Race Information
 - Tire Degradation
-- Race Flags Effects
+- Race Flags Effects (Yellow, Red)
 - Drafting System
 
 ## How to Setup
 1. Place a Programmable Block on your car;
 2. Place a Light Panel or a Transparent LCD at the back of your car, then create group with it called "Brakelight";
-3. Optionally, if your programmable block is not visible from the cockpit, you can place a LCD to show onboard information, name it "Driver LCD";
-4. Open the Control Panel, look for your Programmable Block, click on the "Edit" button, then copy and paste the script;
-5. Make sure to set the following variables according to your needs:
+3. Place a Sensor bellow the tip of your car (facing down and the top of the sensor should be pointing forward the car), then name it "Drafting Sensor";
+4. Optionally, if your programmable block is not visible from the cockpit, you can place a LCD to show onboard information, name it "Driver LCD";
+5. Open the Control Panel, look for your Programmable Block, click on the "Edit" button, then copy and paste the script;
+6. Make sure to set the following variables according to your needs:
    - DRIVER_NAME => Replace "Guest" to "Your Name"
    - DRIVER_NUMBER => Set a number of your preference from 0 to 99, make sure no other driver uses it.
    - DEFAULT_SUSPENSION_STRENGTH => Set the strength percentage you use on your car suspensions, remember to put an "f" at the end of the number, e.g.: 6.32f;
-6. Most of times you won't change the following variables, but optionally you can set:
+7. Most of times you won't change the following variables, but optionally you can set:
    - DEFAULT_SUSPENSION_POWER => Set the power percentage you use on your car suspensions, remember to put an "f" at the end of the number;
-   - DEFAULT_SUSPENSION_SPEED_LIMIT => Set the top speed you use on your car suspensions, remember to put an "f" at the end of the number;
-7. If you want to see onboard race information (Current Lap, Position, Lap Time, Tire Wear), you must have an Antenna on your car. 
-8. Once you have set the values, click on "Check Code" button, a success message should pop-up (if not, repeat the previous steps);
-9. After closing the pop-up, click on "OK" on the Editor;
-10. Setup the arguments to the Programmable Block on your car's hotbar, so you can execute commands for your cockpit, then you're ready to race.
+8. If you want to see onboard race information (Current Lap, Position, Lap Time, Tire Wear), you must have an Antenna on your car. 
+9. Once you have set the values, click on "Check Code" button, a success message should pop-up (if not, repeat the previous steps);
+10. After closing the pop-up, click on "OK" on the Editor;
+11. Setup the arguments to the Programmable Block on your car's hotbar, so you can execute commands for your cockpit, then you're ready to race.
 
 **Note: After setting this up, your grid name will change to the standardized name "DRIVER_NUMBER-DRIVER_NAME", e.g.: "21-Cratera".**
 
@@ -57,6 +57,9 @@ In order to change wheels, you have to go to the pits, with the Pit Limiter acti
   
 - **How does the ERS works?**
   - It sets the power of all your suspensions to 100% while active, which gives more acceleration to your car consuming the ERS charge. When deactivated, it will recharge the ERS while moving.
+  
+- **How does the Drafting System works?**
+  - The default speed limit is now reduced to 95m/s, when you're behind another car (detected by the Drafting Sensor) and you're above 70m/s, your car starts to draft and your suspensions gets 100% wheel power and unlimited speed limit.
   
 - **Do I need to setup FSESS script on my car to be detected by the race control script?"**
   - No, once you cross the start line you are already being tracked. But in order to see your onboard race data, using commands and having the tire degradation effect on your car, you need to setup this script on your car.
