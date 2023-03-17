@@ -1,6 +1,6 @@
 # FSESS - Formula Space Engineers Standard Script
 
-### Version 8.0.0
+### Version 9.0.0
 
 This is the standard script that all cars racing on FSE should be using on Season 8 and it features:
 - Pit Limiter
@@ -20,6 +20,7 @@ This is the standard script that all cars racing on FSE should be using on Seaso
 6. Make sure to set the following variables according to your needs:
    - DRIVER_NAME => Replace "Guest" to "Your Name"
    - DRIVER_NUMBER => Set a number of your preference from 0 to 99, make sure no other driver uses it.
+   - LEAGUE => Set your league according to your team: "F1" or "F2".
    - DEFAULT_SUSPENSION_STRENGTH => Set the strength percentage you use on your car suspensions, remember to put an "f" at the end of the number, e.g.: 6.32f;
 7. Most of times you won't change the following variables, but optionally you can set:
    - DEFAULT_SUSPENSION_POWER => Set the power percentage you use on your car suspensions, remember to put an "f" at the end of the number;
@@ -28,14 +29,14 @@ This is the standard script that all cars racing on FSE should be using on Seaso
 10. After closing the pop-up, click on "OK" on the Editor;
 11. Setup the arguments to the Programmable Block on your car's hotbar, so you can execute commands for your cockpit, then you're ready to race.
 
-**Note: After setting this up, your grid name will change to the standardized name "DRIVER_NUMBER-DRIVER_NAME", e.g.: "21-Cratera".**
+**Note: After setting this up, your grid name will change to the standardized name "LEAGUE #DRIVER_NUMBER-DRIVER_NAME", e.g.: "F1 #21-Cratera".**
 
 ## Arguments
 Here's a list of all arguments supported by the current script:
 - LMT     => Toggle Pit Limiter
 - LMT_ON  => Activate Pit Limiter
 - LMT_OFF => Deactivate Pit Limiter
-- DRS     => Toggle Drag Reduction System (DRS)
+- DRS     => Toggle Drag Reduction System (DRS), supported by FSE1 cars only.
 - ERS     => Toggle Energy Recovery System (ERS)
 - SOFT    => Switch to Soft Tires
 - MEDIUM  => Switch to Medium Tires
@@ -53,13 +54,13 @@ In order to change wheels, you have to go to the pits, with the Pit Limiter acti
 
 ## FAQ
 - **How does the DRS works?**
-  - It sets the strength of all your suspensions to 100% while active, which allows your car to reach 100m/s. But be careful, it might only be good to use on long straights, also bumpy surfaces might put your car in the air while DRS is active.
+  - It sets the strength of all your suspensions to 100% while active, which allows your car to reach 100m/s. But be careful, it might only be good to use on long straights, also bumpy surfaces might put your car in the air while DRS is active. It's now allowed on FSE1 cars only.
   
 - **How does the ERS works?**
   - It sets the power of all your suspensions to 100% while active, which gives more acceleration to your car consuming the ERS charge. When deactivated, it will recharge the ERS while moving.
   
 - **How does the Drafting System works?**
-  - The default speed limit is now reduced to 95m/s, when you're behind another car (detected by the Drafting Sensor) and you're above 70m/s, your car starts to draft and your suspensions gets 100% wheel power and unlimited speed limit.
+  - The default speed limit is now reduced to 95m/s, when you're behind another car (detected by the Drafting Sensor) and you're above 70m/s, your car starts to draft and your suspensions gets 100% wheel power and unlimited speed limit. It remains active for a little while after moving for the overtake.
   
 - **Do I need to setup FSESS script on my car to be detected by the race control script?"**
   - No, once you cross the start line you are already being tracked. But in order to see your onboard race data, using commands and having the tire degradation effect on your car, you need to setup this script on your car.
