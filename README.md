@@ -1,14 +1,15 @@
 # FSESS - Formula Space Engineers Standard Script
 
-### Version 9.0.0
+### Version 10.0.0
 
 This is the standard script that all cars racing on FSE should be using on Season 8 and it features:
 - Pit Limiter
 - Drag Reduction System (DRS)
 - Energy Recovery System (ERS)
 - Onboard Race Information
-- Tire Degradation
+- Tyre Degradation
 - Race Flags Effects (Yellow, Red)
+- Weather Effects
 - Drafting System
 
 ## How to Setup
@@ -38,17 +39,18 @@ Here's a list of all arguments supported by the current script:
 - LMT_OFF => Deactivate Pit Limiter
 - DRS     => Toggle Drag Reduction System (DRS), supported by FSE1 cars only.
 - ERS     => Toggle Energy Recovery System (ERS)
-- SOFT    => Switch to Soft Tires
-- MEDIUM  => Switch to Medium Tires
-- HARD    => Switch to Hard Tires
-- EXTRA   => Switch to Extra-Hard Tires
+- SOFT    => Switch to Soft Tyres
+- MEDIUM  => Switch to Medium Tyres
+- HARD    => Switch to Hard Tyres
+- INT     => Switch to Intermediate Tyres
+- WET     => Switch to Wet Tyres
 
 ## Tire Degradation
 Wheels are going to get less friction overtime, affecting the overall performance of your car. You're going to be able to see the Tire Wear % on your onboard screen, once it reachs 0% a random wheels is going to pop-off your car as a puncture.
 
-In order to change wheels, you have to go to the pits, with the Pit Limiter active, fully stop your car, then you are going to be able to switch tires using the arguments: ULTRA, SOFT, MEDIUM, HARD, EXTRA. Notice that once you change tires, the Tire Wear % changes to 100%, also a letter going to be displayed reprsenting the selected compound (S, M, H, X) and your Brakelight is going to change the color making your current compound visible to the others. The image bellow show the specs for each compound type:
+In order to change wheels, you have to go to the pits, with the Pit Limiter active, fully stop your car, then you are going to be able to switch tires using the arguments: ULTRA, SOFT, MEDIUM, HARD, INT, WET. Notice that once you change tires, the Tire Wear % changes to 100%, also a letter going to be displayed reprsenting the selected compound (S, M, H, I, W) and your Brakelight is going to change the color making your current compound visible to the others. The image bellow show the specs for each compound type:
 
-![alt text](https://i.imgur.com/UlOmMyP.png)
+![alt text](https://i.imgur.com/ORfgNoK.png)
 
 **Note: For now, the drive style won't matter too much on the tire degradation rate, it will be pretty similar to everyone. The degradation rate is only based on current speed (even if the wheels are not touching the ground), the faster you go, the faster your tire will degradate. (At 90m/s it reachs the maximum rate)**
 
@@ -57,10 +59,10 @@ In order to change wheels, you have to go to the pits, with the Pit Limiter acti
   - It sets the strength of all your suspensions to 100% while active, which allows your car to reach 100m/s. But be careful, it might only be good to use on long straights, also bumpy surfaces might put your car in the air while DRS is active. It's now allowed on FSE1 cars only.
   
 - **How does the ERS works?**
-  - It sets the power of all your suspensions to 100% while active, which gives more acceleration to your car consuming the ERS charge. When deactivated, it will recharge the ERS while moving.
+  - It sets the power of all your suspensions to 100% and overclocks it while active, which gives more acceleration to your car consuming the ERS charge. When deactivated, it will recharge the ERS while moving.
   
 - **How does the Drafting System works?**
-  - The default speed limit is now reduced to 95m/s, when you're behind another car (detected by the Drafting Sensor) and you're above 70m/s, your car starts to draft and your suspensions gets 100% wheel power and unlimited speed limit. It remains active for a little while after moving for the overtake.
+  - When you're behind another car (detected by the Drafting Sensor) and you're above 60m/s, your car starts to draft and your suspensions gets 100% wheel power. It remains active for a little while after moving for the overtake.
   
 - **Do I need to setup FSESS script on my car to be detected by the race control script?"**
   - No, once you cross the start line you are already being tracked. But in order to see your onboard race data, using commands and having the tire degradation effect on your car, you need to setup this script on your car.
@@ -69,4 +71,4 @@ In order to change wheels, you have to go to the pits, with the Pit Limiter acti
   - No, unless you turn off your Programable Block (which would be cheating during a race). There is a discussion about preventing tire degradation when Pit Limiter is active, but for now, make sure to change your tires before it's too late.
 
 - **Why these values for the tires?**
-  - Well, the lifespans are based on the Fibonacci sequence, notice that if you sum the lifespan of SOFT + MEDIUM = HARD, also MEDIUM + HARD = EXTRA, this allow a good variety of strategies on the races. Also, the friction ranges are planned in a way so all the compounds have 20% of the lifespan bellow 50% friction, so people can optionally push the wheels to the limit even if they are getting a low performance.
+  - Well, the lifespans are based on the Fibonacci sequence, notice that if you sum the lifespan of SOFT + MEDIUM = HARD, also MEDIUM + HARD = EXTRA, this allow a good variety of strategies on the races. Also, the friction ranges are planned in a way so all the compounds have 10% of the lifespan bellow 40% friction, so people can optionally push the wheels to the limit even if they are getting a low performance.
