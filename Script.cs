@@ -16,9 +16,9 @@ enum Ą{Ē,ą,Ć,ć,Ĉ}enum ĉ{Ċ,ċ,Č,č}enum Ď{ď,Đ}enum đ{ē,Ă,ä,Ā}cla
 è{get;set;}public int é{get;set;}public string ê{get;set;}="--:--.---";public string ë{get;set;}="--:--.---";public ĉ ì{
 get;set;}public Ď í{get;set;}public int î{get;set;}public void ï(string ð){try{var Ò=ð.Split(';');è=Convert.ToInt32(Ò[0]);æ
 =Convert.ToInt32(Ò[1]);ê=Ò[2];ë=Ò[3];ç=Convert.ToInt32(Ò[4]);é=Convert.ToInt32(Ò[5]);ì=(ĉ)Convert.ToInt32(Ò[6]);í=(Ď)
-Convert.ToInt32(Ò[7]);î=Convert.ToInt32(Ò[8]);}catch(Exception){}}}string ñ="10.0.0";const int ò=3000;const int ó=1000;const
-int ô=1000;const float õ=80f;const float ö=999f;const char ø='\u2191';const char ù='\u2193';const char ú='\u2588';const
-char û='\u2592';const char ü='\u2591';const float ý=1.15f;bool þ;IMyMotorSuspension[]ÿ;IMyCockpit ă;List<IMyTextSurface>ā;
+Convert.ToInt32(Ò[7]);î=Convert.ToInt32(Ò[8]);}catch(Exception){}}}string ñ="10.0.1";const int ò=3000;const int ó=1000;const
+int ô=1000;const float õ=80f;const float ö=96f;const char ø='\u2191';const char ù='\u2193';const char ú='\u2588';const char
+û='\u2592';const char ü='\u2591';const float ý=1.7f;bool þ;IMyMotorSuspension[]ÿ;IMyCockpit ă;List<IMyTextSurface>ā;
 IMyTextSurface Ĕ;List<IMySoundBlock>ĭ;IMyRadioAntenna Į;IMySensorBlock į;bool İ;bool ı;bool Ĳ;StringBuilder ĳ;å Ĵ;List<
 IMyTerminalBlock>ĵ;List<IMyLightingBlock>Ķ;List<IMyLightingBlock>ķ;Ą ĸ;float Ĺ=0;float ĺ=100;float ļ=1;float ņ=100;long Ľ=-1;
 IMyBroadcastListener ľ;int Ŀ;int ŀ;DateTime Ł;float ł;float Ń=1f;bool ń=false;int Ņ;Program(){Ĵ=new å();try{q();t();A();G();K();S();Q();Ö();
