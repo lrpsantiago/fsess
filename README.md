@@ -1,6 +1,6 @@
 # FSESS - Formula Space Engineers Standard Script
 
-### Version 10.0.0
+### Version 10.0.1
 
 This is the standard script that all cars racing on FSE should be using on Season 10 and it features:
 - Pit Limiter
