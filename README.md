@@ -1,6 +1,6 @@
 # FSESS - Formula Space Engineers Standard Script
 
-### Version 10.0.2
+### Version 10.1.0
 
 This is the standard script that all cars racing on FSE should be using on Season 10 and it features:
 - Pit Limiter
@@ -51,7 +51,7 @@ Wheels are going to get less friction overtime, affecting the overall performanc
 
 In order to change wheels, you have to go to the pits, with the Pit Limiter active, fully stop your car, then you are going to be able to switch tires using the arguments: ULTRA, SOFT, MEDIUM, HARD, INT, WET. Notice that once you change tires, the Tire Wear % changes to 100%, also a letter going to be displayed reprsenting the selected compound (S, M, H, I, W) and your Brakelight is going to change the color making your current compound visible to the others. The image bellow show the specs for each compound type:
 
-![alt text](https://i.imgur.com/ORfgNoK.png)
+![alt text](https://i.imgur.com/7A5ySZA.png)
 
 **Note: For now, the drive style won't matter too much on the tire degradation rate, it will be pretty similar to everyone. The degradation rate is only based on current speed (even if the wheels are not touching the ground), the faster you go, the faster your tire will degradate. (At 90m/s it reachs the maximum rate)**
 
