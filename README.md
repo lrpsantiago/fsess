@@ -24,12 +24,10 @@ This is the standard script that all cars racing on FSE should be using on Seaso
    - DRIVER_NUMBER => Set a number of your preference from 0 to 99, make sure no other driver uses it.
    - LEAGUE => Set your league according to your team: "F1" or "F2".
    - DEFAULT_SUSPENSION_STRENGTH => Set the strength percentage you use on your car suspensions, remember to put an "f" at the end of the number, e.g.: 6.32f;
-8. Most of times you won't change the following variables, but optionally you can set:
-   - DEFAULT_SUSPENSION_POWER => Set the power percentage you use on your car suspensions, remember to put an "f" at the end of the number;
-9. If you want to see onboard race information (Current Lap, Position, Lap Time, Tire Wear), you must have an Antenna on your car. 
-10. Once you have set the values, click on "Check Code" button, a success message should pop-up (if not, repeat the previous steps);
-11. After closing the pop-up, click on "OK" on the Editor;
-12. Setup the arguments to the Programmable Block on your car's hotbar, so you can execute commands for your cockpit, then you're ready to race.
+8. If you want to see onboard race information (Current Lap, Position, Lap Time, Tyre Wear), you must have an Antenna on your car. 
+9. Once you have set the values, click on "Check Code" button, a success message should pop-up (if not, repeat the previous steps);
+10. After closing the pop-up, click on "OK" on the Editor;
+11. Setup the arguments to the Programmable Block on your car's hotbar, so you can execute commands for your cockpit, then you're ready to race.
 
 **Note: After setting this up, your grid name will change to the standardized name "LEAGUE #DRIVER_NUMBER-DRIVER_NAME", e.g.: "F1 #21-Cratera".**
 
@@ -46,14 +44,14 @@ Here's a list of all arguments supported by the current script:
 - INT     => Switch to Intermediate Tyres
 - WET     => Switch to Wet Tyres
 
-## Tire Degradation
-Wheels are going to get less friction overtime, affecting the overall performance of your car. You're going to be able to see the Tire Wear % on your onboard screen, once it reachs 0% a random wheels is going to pop-off your car as a puncture.
+## Tyre Degradation
+Wheels are going to get less friction overtime, affecting the overall performance of your car. You're going to be able to see the Tyre Wear % on your onboard screen, once it reachs 0% a random wheels is going to pop-off your car as a puncture.
 
-In order to change wheels, you have to go to the pits, with the Pit Limiter active, fully stop your car, then you are going to be able to switch tires using the arguments: ULTRA, SOFT, MEDIUM, HARD, INT, WET. Notice that once you change tires, the Tire Wear % changes to 100%, also a letter going to be displayed reprsenting the selected compound (S, M, H, I, W) and your Brakelight is going to change the color making your current compound visible to the others. The image bellow show the specs for each compound type:
+In order to change wheels, you have to go to the pits, with the Pit Limiter active, fully stop your car, then you are going to be able to switch tyres using the arguments: ULTRA, SOFT, MEDIUM, HARD, INT, WET. Notice that once you change tyres, the Tyre Wear % changes to 100%, also a letter going to be displayed reprsenting the selected compound (S, M, H, I, W) and your Brakelight is going to change the color making your current compound visible to the others. The image bellow show the specs for each compound type:
 
 ![alt text](https://i.imgur.com/7A5ySZA.png)
 
-**Note: For now, the drive style won't matter too much on the tire degradation rate, it will be pretty similar to everyone. The degradation rate is only based on current speed (even if the wheels are not touching the ground), the faster you go, the faster your tire will degradate. (At 90m/s it reachs the maximum rate)**
+**Note: For now, the drive style won't matter too much on the tyre degradation rate, it will be pretty similar to everyone. The degradation rate is only based on current speed (even if the wheels are not touching the ground), the faster you go, the faster your tyre will degradate. (At 90m/s it reachs the maximum rate)**
 
 ## FAQ
 - **How does the DRS works?**
@@ -63,13 +61,13 @@ In order to change wheels, you have to go to the pits, with the Pit Limiter acti
   - It sets the power of all your suspensions to 100% and overclocks it while active, which gives more acceleration to your car consuming the ERS charge. When deactivated, it will recharge the ERS while moving.
   
 - **How does the Drafting System works?**
-  - When you're behind another car (detected by the Drafting Sensor) and you're above 60m/s, your car starts to draft and your suspensions gets 100% wheel power. It remains active for a little while after moving for the overtake.
+  - When you're behind another car (detected by the Drafting Sensor) and you're above 60m/s, your car starts to draft: your suspensions gets 100% wheel power and your speed limit is set to unlimited. It remains active for a little while after moving for the overtake.
   
 - **Do I need to setup FSESS script on my car to be detected by the race control script?"**
-  - No, once you cross the start line you are already being tracked. But in order to see your onboard race data, using commands and having the tire degradation effect on your car, you need to setup this script on your car.
+  - No, once you cross the start line you are already being tracked. But in order to see your onboard race data, using commands and having the tyre degradation effect on your car, you need to setup this script on your car.
   
-- **Is there anyway to stop the tire degradation?**
-  - No, unless you turn off your Programable Block (which would be cheating during a race). There is a discussion about preventing tire degradation when Pit Limiter is active, but for now, make sure to change your tires before it's too late.
+- **Is there anyway to stop the tyre degradation?**
+  - No, unless you turn off your Programable Block (which would be cheating during a race). There is a discussion about preventing tyre degradation when Pit Limiter is active, but for now, make sure to change your tyres before it's too late.
 
-- **Why these values for the tires?**
+- **Why these values for the tyres?**
   - Well, the lifespans are based on the Fibonacci sequence, notice that if you sum the lifespan of SOFT + MEDIUM = HARD, also MEDIUM + HARD = EXTRA, this allow a good variety of strategies on the races. Also, the friction ranges are planned in a way so all the compounds have 10% of the lifespan bellow 40% friction, so people can optionally push the wheels to the limit even if they are getting a low performance.
