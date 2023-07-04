@@ -47,7 +47,7 @@ Here's a list of all arguments supported by the current script:
 ## Tyre Degradation
 Wheels are going to get less friction overtime, affecting the overall performance of your car. You're going to be able to see the Tyre Wear % on your onboard screen, once it reachs 0% a random wheels is going to pop-off your car as a puncture.
 
-In order to change wheels, you have to go to the pits, with the Pit Limiter active, fully stop your car, then you are going to be able to switch tyres using the arguments: ULTRA, SOFT, MEDIUM, HARD, INT, WET. Notice that once you change tyres, the Tyre Wear % changes to 100%, also a letter going to be displayed reprsenting the selected compound (S, M, H, I, W) and your Brakelight is going to change the color making your current compound visible to the others. The image bellow show the specs for each compound type:
+In order to change wheels, you have to go to the pits, with the Pit Limiter active, fully stop your car, then you are going to be able to switch tyres using the arguments: SOFT, MEDIUM, HARD, INT, WET. Notice that once you change tyres, the Tyre Wear % changes to 100%, also a letter going to be displayed reprsenting the selected compound (S, M, H, I, W) and your Brakelight is going to change the color making your current compound visible to the others. The image bellow show the specs for each compound type:
 
 ![alt text](https://i.imgur.com/7A5ySZA.png)
 
@@ -70,4 +70,4 @@ In order to change wheels, you have to go to the pits, with the Pit Limiter acti
   - No, unless you turn off your Programable Block (which would be cheating during a race). There is a discussion about preventing tyre degradation when Pit Limiter is active, but for now, make sure to change your tyres before it's too late.
 
 - **Why these values for the tyres?**
-  - Well, the lifespans are based on the Fibonacci sequence, notice that if you sum the lifespan of SOFT + MEDIUM = HARD, also MEDIUM + HARD = EXTRA, this allow a good variety of strategies on the races. Also, the friction ranges are planned in a way so all the compounds have 10% of the lifespan bellow 40% friction, so people can optionally push the wheels to the limit even if they are getting a low performance.
+  - The lifespans are based on the Fibonacci sequence, notice that if you sum the lifespan of SOFT + MEDIUM = HARD, this allow a good variety of strategies on the races. Also, the friction ranges are planned in a way so all the compounds have 10% of the lifespan bellow 40% friction (we call it the Anchor), so people can optionally push the wheels to the limit even if they are getting a low performance.
