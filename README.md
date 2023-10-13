@@ -1,6 +1,6 @@
 # FSESS - Formula Space Engineers Standard Script
 
-### Version 10.1.0 
+### Version 11.0.0 
 
 This is the standard script that all cars racing on FSE should be using on Season 10 and it features:
 - Pit Limiter
@@ -11,6 +11,8 @@ This is the standard script that all cars racing on FSE should be using on Seaso
 - Race Flags Effects (Yellow, Red)
 - Weather Effects
 - Drafting System
+- Race Positions Information
+- Auto HudLcd Plugin Setup
 
 ## How to Setup
 1. Place a Programmable Block on your car;
