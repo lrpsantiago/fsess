@@ -22,9 +22,9 @@ This is the standard script that all cars racing on FSE should be using on Seaso
 5. Optionally, if your programmable block is not visible from the cockpit, you can place a LCD to show onboard information, name it "Driver LCD";
 6. Open the Control Panel, look for your Programmable Block, click on the "Edit" button, then copy and paste the script;
 7. Make sure to set the following variables according to your needs:
+   - TEAM_TAG => 3 Letters that represents your team, if you're not in a team it's going to be "XXX"
    - DRIVER_NAME => Replace "Guest" to "Your Name"
    - DRIVER_NUMBER => Set a number of your preference from 0 to 99, make sure no other driver uses it.
-   - LEAGUE => Set your league according to your team: "F1" or "F2".
    - DEFAULT_SUSPENSION_STRENGTH => Set the strength percentage you use on your car suspensions, remember to put an "f" at the end of the number, e.g.: 6.32f;
 8. If you want to see onboard race information (Current Lap, Position, Lap Time, Tyre Wear), you must have an Antenna on your car. 
 9. Once you have set the values, click on "Check Code" button, a success message should pop-up (if not, repeat the previous steps);
