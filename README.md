@@ -1,6 +1,6 @@
 # FSESS - Formula Space Engineers Standard Script
 
-### Version 11.0.0 
+### Version 11.1.0 
 
 This is the standard script that all cars racing on FSE should be using on Season 11 and it features:
 - Pit Limiter
@@ -31,15 +31,19 @@ This is the standard script that all cars racing on FSE should be using on Seaso
 10. After closing the pop-up, click on "OK" on the Editor;
 11. Setup the arguments to the Programmable Block on your car's hotbar, so you can execute commands for your cockpit, then you're ready to race.
 
-**Note: After setting this up, your grid name will change to the standardized name "LEAGUE #DRIVER_NUMBER-DRIVER_NAME", e.g.: "F1 #21-Cratera".**
+**Note: After setting this up, your grid name will change to the standardized name "TEAM_TAG #DRIVER_NUMBER-DRIVER_NAME", e.g.: "CPS #21-Cratera".**
 
 ## Arguments
 Here's a list of all arguments supported by the current script:
 - LMT     => Toggle Pit Limiter
 - LMT_ON  => Activate Pit Limiter
 - LMT_OFF => Deactivate Pit Limiter
-- DRS     => Toggle Drag Reduction System (DRS), supported by FSE1 cars only.
+- DRS     => Toggle Drag Reduction System (DRS)
+- DRS_ON  => Activate DRS
+- DRS_OFF => Deactivate DRS
 - ERS     => Toggle Energy Recovery System (ERS)
+- ERS_ON  => Activate ERS
+- ERS_OFF => Deactivate ERS
 - SOFT    => Switch to Soft Tyres
 - MEDIUM  => Switch to Medium Tyres
 - HARD    => Switch to Hard Tyres
