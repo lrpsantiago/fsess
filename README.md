@@ -2,7 +2,7 @@
 
 ### Version 12.1.0
 
-This is the standard script that all cars racing on FSE should be using on Season 11 and it features:
+This is the standard script that all cars racing on FSE should be using on Season 12 and it features:
 - Pit Limiter
 - Drag Reduction System (DRS)
 - Energy Recovery System (ERS)
