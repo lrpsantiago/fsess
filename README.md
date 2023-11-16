@@ -76,7 +76,7 @@ In order to change wheels, you have to go to the pits, with the Pit Limiter acti
   - No, once you cross the start line you are already being tracked. But in order to see your onboard race data, using commands and having the tyre degradation effect on your car, you need to setup this script on your car.
   
 - **Is there anyway to stop the tyre degradation?**
-  - No, unless you turn off your Programable Block (which would be cheating during a race). There is a discussion about preventing tyre degradation when Pit Limiter is active, but for now, make sure to change your tyres before it's too late.
+  - No, unless you turn off your Programable Block (which would be cheating during a race). Make sure to change your tyres before it's too late.
 
 - **Why these values for the tyres?**
   - The lifespans are based on the Fibonacci sequence, notice that if you sum the lifespan of SOFT + MEDIUM = HARD, this allow a good variety of strategies on the races. Also, the friction ranges are planned in a way so all the compounds have 20% of the lifespan bellow 50% friction (we call it the Anchor), so people can optionally push the wheels to the limit even if they are getting a low performance.
