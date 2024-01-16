@@ -1,6 +1,6 @@
 # FSESS - Formula Space Engineers Standard Script
 
-### Version 12.3.0
+### Version 12.4.0
 
 This is the standard script that all cars racing on FSE should be using on Season 12 and it features:
 - Pit Limiter
@@ -72,7 +72,7 @@ In order to change wheels, you have to go to the pits, with the Pit Limiter acti
   - It sets the power of all your suspensions to 100% and overclocks it while active, which gives more acceleration to your car consuming the ERS charge. When deactivated, it will recharge the ERS while moving.
   
 - **How does the Drafting System works?**
-  - When you're behind another car (detected by the Drafting Sensor) and you're above 70m/s, your car starts to draft: your suspensions gets 100% wheel power and your speed limit is set to unlimited. It remains active for a little while after moving for the overtake.
+  - When you're behind another car (detected by the Drafting Sensor) and it is above 70m/s, your car starts to draft: your suspensions gets 100% wheel power and your speed limit is set to unlimited. It remains active for a little while after moving for the overtake.
   
 - **Do I need to setup FSESS script on my car to be detected by the race control script?"**
   - No, once you cross the start line you are already being tracked. But in order to see your onboard race data, using commands and having the tyre degradation effect on your car, you need to setup this script on your car.
